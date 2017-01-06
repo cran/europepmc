@@ -21,7 +21,6 @@ Other sources Europe PubMed Central supports are:
   \item{eth}{EthOs Theses, i.e. PhD theses (British Library)}
   \item{hir}{NHS Evidence}
   \item{med}{PubMed/Medline NLM}
-  \item{nbk}{Europe PMC Book metadata}
   \item{pat}{Biological Patents}
   \item{pmc}{PubMed Central}
   }}
@@ -36,6 +35,7 @@ MeSH terms, chemicals, grants.
 }
 \examples{
 \dontrun{
+epmc_details(ext_id = "26980001")
 epmc_details(ext_id = "24270414")
 
 # PMC record
@@ -49,13 +49,11 @@ epmc_details("EP2412369", data_src = "pat")
 # Chinese Biological Abstracts
 epmc_details("583843", data_src = "cba")
 # CiteXplore
-epmc_details("C7603", data_src = "ctx")
+epmc_details("C6802", data_src = "ctx")
 # NHS Evidence
 epmc_details("338638", data_src = "hir")
 # Theses
 epmc_details("409323", data_src = "eth")
-# Books
-epmc_details("NBK338142", data_src = "nbk")
 }
 }
 

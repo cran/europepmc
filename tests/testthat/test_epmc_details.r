@@ -7,21 +7,24 @@ test_that("epmc_details returns", {
   c <- epmc_details("IND43783977", data_src = "agr")
   d <- epmc_details("EP2412369", data_src = "pat")
   e <- epmc_details("583843", data_src = "cba")
-  f <- epmc_details("C7603", data_src = "ctx")
+  f <- epmc_details("C6802", data_src = "ctx")
   g <- epmc_details("338638", data_src = "hir")
   h <- epmc_details("409323", data_src = "eth")
-  i <- epmc_details("NBK338142", data_src = "nbk")
+  j <- epmc_details("20585653")
+  k <- epmc_details(ext_id = "26980001")
+
 
   #correct dimensions and class
-  expect_output(str(a), "List of 8")
-  expect_output(str(b), "List of 8")
-  expect_output(str(c), "List of 8")
-  expect_output(str(d), "List of 8")
-  expect_output(str(e), "List of 8")
-  expect_output(str(f), "List of 8")
-  expect_output(str(g), "List of 8")
-  expect_output(str(h), "List of 8")
-  expect_output(str(i), "List of 8")
+  expect_output(str(a), "List of 9")
+  expect_output(str(b), "List of 9")
+  expect_output(str(c), "List of 9")
+  expect_output(str(d), "List of 9")
+  expect_output(str(e), "List of 9")
+  expect_output(str(f), "List of 9")
+  expect_output(str(g), "List of 9")
+  expect_output(str(h), "List of 9")
+  expect_output(str(j), "List of 9")
+  expect_output(str(k), "List of 9")
 
   #correct class metadata
   expect_is(a$basic, "data.frame")
@@ -35,7 +38,11 @@ test_that("epmc_details returns", {
   expect_is(a$chemical, "data.frame")
   expect_is(a$grants, "data.frame")
   expect_is(a$mesh_topic, "data.frame")
+  expect_is(a$mesh_qualifiers, "data.frame")
   expect_is(a$comments, "data.frame")
+
+  # returns NULL if no mesh qualifiers were found
+  expect_equal(j$mesh_qualifiers, NULL)
 
   #are diminsions correct?
   expect_equal(nrow(a$basic), 1)

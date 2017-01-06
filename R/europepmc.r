@@ -21,4 +21,11 @@
 #'
 #' @name europepmc
 #' @docType package
+#'
+#' @importFrom urltools url_decode
+#' @importFrom utils URLencode
+#' @importFrom plyr rbind.fill ldply
+#' @importFrom jsonlite fromJSON rbind.pages
+#' @importFrom httr GET content stop_for_status
+#' @importFrom dplyr %>% as_data_frame select_if data_frame bind_rows
 NULL

@@ -8,70 +8,75 @@ knitr::opts_chunk$set(
 
 ## ------------------------------------------------------------------------
 library(europepmc)
-my_data <- epmc_search(query = 'Gabi-Kat')
-# first six records
-head(my_data)
 
 ## ------------------------------------------------------------------------
-my_data <- epmc_search(query = 'ISSN:1553-7404 HAS_EMBL:y')
-head(my_data)
+epmc_search(query = 'Gabi-Kat')
+
+## ------------------------------------------------------------------------
+epmc_search(query = 'ISSN:1553-7404 HAS_EMBL:y')
+
+## ------------------------------------------------------------------------
+epmc_search(query = 'AUTHORID:"0000-0002-7635-3473"', limit = 1000)
+
+## ------------------------------------------------------------------------
+# with snyonyms
+epmc_search('aspirin', synonym = TRUE)
+
+# without synonyms
+epmc_search('aspirin', synonym = FALSE)
+
+## ------------------------------------------------------------------------
+epmc_search('Gabi-Kat', output = 'parsed')
+
+## ------------------------------------------------------------------------
+epmc_search('Gabi-Kat', output = 'id_list')
+
+## ------------------------------------------------------------------------
+my_list <- epmc_search('Gabi-Kat', output = 'raw', limit = 10)
+# display the structure for one list element
+str(my_list[[10]])
 
 ## ------------------------------------------------------------------------
 query <- "ACCESSION_TYPE:doi"
 epmc_hits(query)
 # set limit to 10 records
-my_data <- epmc_search(query = "ACCESSION_TYPE:doi", limit = 10,
-                       id_list = TRUE)
+my_data <- epmc_search(query = query, limit = 10)
 head(my_data)
 attr(my_data, "hit_count")
 
 ## ------------------------------------------------------------------------
-my_data <- epmc_search(query = 'AUTHORID:"0000-0002-7635-3473"')
-attr(my_data, "hit_count")
+epmc_details(ext_id = '24270414')
 
 ## ------------------------------------------------------------------------
-my_data <- epmc_search("aspirin", synonym = TRUE)
-attr(my_data, "hit_count")
-
-my_data <- epmc_search("aspirin", synonym = FALSE)
-attr(my_data, "hit_count")
+epmc_details(ext_id = '14756321')$author_details
 
 ## ------------------------------------------------------------------------
-epmc_details(ext_id = "24270414")
+my_cites <- epmc_citations('9338777')
+my_cites
+# hits:
+attr(my_cites, 'hit_count')
 
 ## ------------------------------------------------------------------------
-my_data <- epmc_details(ext_id = "14756321")
-my_data$author_details
+epmc_refs('PMC3166943', data_src = 'pmc')
 
 ## ------------------------------------------------------------------------
-my_cites <- epmc_citations("9338777")
-head(my_cites)
-attr(my_cites, "hit_count")
+epmc_db_count('12368864')
 
 ## ------------------------------------------------------------------------
-epmc_refs("PMC3166943", data_src = "pmc")
+epmc_db('12368864', db = 'embl')
 
 ## ------------------------------------------------------------------------
-epmc_db_count("12368864")
+epmc_tm_count('25249410')
 
 ## ------------------------------------------------------------------------
-epmc_db("12368864", db = "embl")
+epmc_tm('25249410', semantic_type = 'GO_TERM')
 
 ## ------------------------------------------------------------------------
-epmc_tm_count("25249410")
+epmc_lablinks_count('PMC3986813', data_src = 'pmc')
 
 ## ------------------------------------------------------------------------
-epmc_tm("25249410", semantic_type = "GO_TERM")
+epmc_lablinks('24023770', lab_id = '1342')
 
 ## ------------------------------------------------------------------------
-epmc_lablinks_count("PMC3986813", data_src = "pmc")
-
-## ------------------------------------------------------------------------
-epmc_lablinks("24023770", lab_id = "1342")
-
-## ------------------------------------------------------------------------
-epmc_ftxt("PMC3257301")
-
-## ------------------------------------------------------------------------
-epmc_ftxt_book("NBK32884")
+epmc_ftxt('PMC3257301')
 
