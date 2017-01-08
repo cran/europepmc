@@ -83,12 +83,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Europe PMC: a full-text literature database for the life sciences and platform for innovation. (2014). Nucleic Acids Research, 43(D1), D1042–D1048. <a href="http://doi.org/10.1093/nar/gku1061" class="uri">http://doi.org/10.1093/nar/gku1061</a></p>
 <div id="implemented-api-methods" class="section level2">
 <h2>Implemented API methods</h2>
-<p>The following API methods are supported:</p>
+<p>This client supports the following API methods:</p>
 <table>
 <colgroup>
-<col width="19%"></col>
-<col width="40%"></col>
-<col width="40%"></col>
+<col width="10%"></col>
+<col width="61%"></col>
+<col width="28%"></col>
 </colgroup>
 <thead>
 <tr class="header">
@@ -104,36 +104,41 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="left"><code>epmc_search()</code>, <code>epmc_details()</code></td>
 </tr>
 <tr class="even">
+<td align="left">profile</td>
+<td align="left">Obtain a summary of hit counts for several Europe PMC databases</td>
+<td align="left"><code>epmc_profile()</code></td>
+</tr>
+<tr class="odd">
 <td align="left">citations</td>
 <td align="left">Load metadata representing citing articles for a given publication</td>
 <td align="left"><code>epmc_citations()</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">references</td>
 <td align="left">Retrieve the reference section of a pubication</td>
 <td align="left"><code>epmc_refs()</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">databaseLinks</td>
 <td align="left">Get links to biological databases such as UniProt or ENA</td>
 <td align="left"><code>epmc_db()</code>, <code>epmc_db_count()</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">labslinks</td>
 <td align="left">Access links to Europe PMC provided by third parties</td>
 <td align="left"><code>epmc_lablinks()</code>, <code>epmc_lablinks_count()</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">textMinedTerms</td>
 <td align="left">Retrieve text-mined terms</td>
 <td align="left"><code>epmc_tm()</code>, <code>epmc_tm_count()</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">fullTextXML</td>
 <td align="left">Fetch full-texts deposited in PMC</td>
 <td align="left"><code>epmc_ftxt()</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">bookXML</td>
 <td align="left">retrieve book XML formatted full text for the Open Access subset of the Europe PMC bookshelf</td>
 <td align="left"><code>epmc_ftxt_book()</code></td>
@@ -240,11 +245,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; 3  28039526    MED 28039526    10.1007/s00246-016-1529-x</span>
 <span class="co">#&gt; 4  28030443    MED 28030443 10.1097/eja.0000000000000581</span>
 <span class="co">#&gt; 5  28039577    MED 28039577    10.1007/s12975-016-0516-0</span>
-<span class="co">#&gt; 6  28033561    MED 28033561 10.1016/j.ejogrb.2016.12.023</span>
-<span class="co">#&gt; 7  28004997    MED 28004997        10.6002/ect.2016.0139</span>
-<span class="co">#&gt; 8  27987244    MED 27987244            10.1111/wrr.12502</span>
-<span class="co">#&gt; 9  28052291    MED 28052291                         &lt;NA&gt;</span>
-<span class="co">#&gt; 10 27931272    MED 27931272                         &lt;NA&gt;</span>
+<span class="co">#&gt; 6  28056332    MED 28056332                         &lt;NA&gt;</span>
+<span class="co">#&gt; 7  28033561    MED 28033561 10.1016/j.ejogrb.2016.12.023</span>
+<span class="co">#&gt; 8  28004997    MED 28004997        10.6002/ect.2016.0139</span>
+<span class="co">#&gt; 9  28052291    MED 28052291            10.1159/000452361</span>
+<span class="co">#&gt; 10 27987244    MED 27987244            10.1111/wrr.12502</span>
 <span class="co">#&gt; # ... with 90 more rows, and 23 more variables: title &lt;chr&gt;,</span>
 <span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, issue &lt;chr&gt;,</span>
 <span class="co">#&gt; #   journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;,</span>
@@ -265,10 +270,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; 4  27987244    MED 27987244             10.1111/wrr.12502</span>
 <span class="co">#&gt; 5  27937054    MED 27937054 10.1080/14656566.2016.1269747</span>
 <span class="co">#&gt; 6  28004997    MED 28004997         10.6002/ect.2016.0139</span>
-<span class="co">#&gt; 7  28030443    MED 28030443  10.1097/eja.0000000000000581</span>
-<span class="co">#&gt; 8  28039577    MED 28039577     10.1007/s12975-016-0516-0</span>
-<span class="co">#&gt; 9  27902693    MED 27902693  10.1371/journal.pone.0166103</span>
-<span class="co">#&gt; 10 27917124    MED 27917124                          &lt;NA&gt;</span>
+<span class="co">#&gt; 7  28056332    MED 28056332                          &lt;NA&gt;</span>
+<span class="co">#&gt; 8  28030443    MED 28030443  10.1097/eja.0000000000000581</span>
+<span class="co">#&gt; 9  28039577    MED 28039577     10.1007/s12975-016-0516-0</span>
+<span class="co">#&gt; 10 27902693    MED 27902693  10.1371/journal.pone.0166103</span>
 <span class="co">#&gt; # ... with 90 more rows, and 23 more variables: title &lt;chr&gt;,</span>
 <span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, issue &lt;chr&gt;,</span>
 <span class="co">#&gt; #   journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;,</span>
@@ -529,6 +534,37 @@ my_data &lt;-<span class="st"> </span><span class="kw">epmc_search</span>(<span 
 <span class="co">#&gt; #   issue &lt;chr&gt;, doi &lt;chr&gt;</span>
 <span class="kw">attr</span>(my_data, <span class="st">&quot;hit_count&quot;</span>)
 <span class="co">#&gt; [1] 6933</span></code></pre></div>
+<p>You may also use <code>epmc_profile</code> to retrieve a summary of hit counts.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmc_profile</span>(<span class="dt">query =</span> <span class="st">'malaria'</span>)
+<span class="co">#&gt; $source</span>
+<span class="co">#&gt; # A tibble: 9 × 2</span>
+<span class="co">#&gt;    name  count</span>
+<span class="co">#&gt; * &lt;chr&gt;  &lt;int&gt;</span>
+<span class="co">#&gt; 1   AGR    121</span>
+<span class="co">#&gt; 2   CBA    118</span>
+<span class="co">#&gt; 3   CTX      8</span>
+<span class="co">#&gt; 4   ETH    239</span>
+<span class="co">#&gt; 5   HIR      4</span>
+<span class="co">#&gt; 6   MED 127023</span>
+<span class="co">#&gt; 7   PAT   2295</span>
+<span class="co">#&gt; 8   CIT      0</span>
+<span class="co">#&gt; 9   PMC  10728</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $pubType</span>
+<span class="co">#&gt; # A tibble: 5 × 2</span>
+<span class="co">#&gt;                  name  count</span>
+<span class="co">#&gt; *               &lt;chr&gt;  &lt;int&gt;</span>
+<span class="co">#&gt; 1                 ALL 140536</span>
+<span class="co">#&gt; 2           FULL TEXT  79247</span>
+<span class="co">#&gt; 3         OPEN ACCESS  33853</span>
+<span class="co">#&gt; 4              REVIEW  16562</span>
+<span class="co">#&gt; 5 BOOKS AND DOCUMENTS     94</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $subset</span>
+<span class="co">#&gt; # A tibble: 1 × 2</span>
+<span class="co">#&gt;    name count</span>
+<span class="co">#&gt; * &lt;chr&gt; &lt;int&gt;</span>
+<span class="co">#&gt; 1    BL     3</span></code></pre></div>
 </div>
 </div>
 <div id="get-article-details" class="section level2">
@@ -686,7 +722,7 @@ my_cites
 <span class="co">#&gt; 18     &lt;NA&gt;   &lt;NA&gt;            &lt;NA&gt;</span>
 <span class="co">#&gt; # ... with 13 more variables: title &lt;chr&gt;, authorString &lt;chr&gt;,</span>
 <span class="co">#&gt; #   journalAbbreviation &lt;chr&gt;, issue &lt;chr&gt;, pubYear &lt;int&gt;, volume &lt;chr&gt;,</span>
-<span class="co">#&gt; #   pageInfo &lt;chr&gt;, citedOrder &lt;int&gt;, match &lt;chr&gt;, issn &lt;chr&gt;, essn &lt;chr&gt;,</span>
+<span class="co">#&gt; #   pageInfo &lt;chr&gt;, citedOrder &lt;int&gt;, match &lt;chr&gt;, essn &lt;chr&gt;, issn &lt;chr&gt;,</span>
 <span class="co">#&gt; #   publicationTitle &lt;chr&gt;, externalLink &lt;chr&gt;</span></code></pre></div>
 <p>Tip: add <code>has_reflist:y</code> to your search string in <code>epmc_search</code> to make sure you only get publications whose reference sections are accessible through Europe PMC.</p>
 </div>
@@ -721,7 +757,7 @@ my_cites
 </div>
 <div id="get-text-mined-terms" class="section level2">
 <h2>Get text-mined terms</h2>
-<p>Text-mined terms that can be accessed via Europe PMC are mapped against controlled vocabularies such as <a href="http://www.ebi.ac.uk/QuickGO/">Gene Ontology</a>.</p>
+<p>Text-mined terms that can be accessed via Europe PMC are mapped against controlled vocabularies like <a href="http://www.geneontology.org/">Gene Ontology</a>.</p>
 <p>Before retrieving these terms, please check availability and vocabularies first:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmc_tm_count</span>(<span class="st">'25249410'</span>)
 <span class="co">#&gt; # A tibble: 7 × 2</span>
@@ -800,6 +836,11 @@ my_cites
 <span class="co">#&gt; [3] &lt;back&gt;\n  &lt;ack&gt;\n    &lt;p&gt;We would like to thank Dr. C. Gourlay and Dr ...</span></code></pre></div>
 <p>Books, fetched through the PMID or the ‘NBK’ book number, can also be loaded as XML into R for further text-mining activities using <code>epmc_ftxt_book()</code>.</p>
 <p>Please check full-text availability before calling this method either with <code>epmc_search()</code> or <code>epmc_details()</code>.</p>
+</div>
+<div id="re-use-of-europepmc" class="section level2">
+<h2>Re-use of europepmc</h2>
+<p>Chris Stubben (<span class="citation">@cstubben</span>) has created an Shiny App that allows you to search and browse Europe PMC:</p>
+<p><a href="https://cstubben.shinyapps.io/euPMC/" class="uri">https://cstubben.shinyapps.io/euPMC/</a></p>
 </div>
 <div id="other-ways-to-access-europe-pubmed-central" class="section level2">
 <h2>Other ways to access Europe PubMed Central</h2>

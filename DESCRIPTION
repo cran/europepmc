@@ -1,6 +1,6 @@
 Package: europepmc
 Title: R Interface to the Europe PubMed Central RESTful Web Service
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(
            person("Najko", "Jahn", email = "najko.jahn@gmail.com",
            role = c("aut", "cre", "cph")))
@@ -20,12 +20,12 @@ LazyLoad: yes
 LazyData: yes
 VignetteBuilder: knitr
 Depends: R (>= 3.00)
-Imports: httr, jsonlite, plyr, dplyr, xml2, urltools
+Imports: httr, jsonlite, plyr, dplyr, urltools, xml2
 RoxygenNote: 5.0.1
 Suggests: testthat, knitr, rmarkdown
 NeedsCompilation: no
-Packaged: 2017-01-06 17:18:57 UTC; najkojahn
+Packaged: 2017-01-08 16:16:44 UTC; najkojahn
 Author: Najko Jahn [aut, cre, cph]
 Maintainer: Najko Jahn <najko.jahn@gmail.com>
 Repository: CRAN
-Date/Publication: 2017-01-06 23:24:53
+Date/Publication: 2017-01-08 17:53:04

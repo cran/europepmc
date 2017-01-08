@@ -10,7 +10,7 @@
 #' bibliographic database of citations to the agricultural literature, or
 #' Biological Patents.
 #'
-#' Apart of searching abstracts and full text, europepmc can be used to
+#' Besides searching abstracts and full text, europepmc can be used to
 #' retrieve reference sections and citations, text-mined terms or cross-links
 #' to other databases hosted by the European Bioinformatics Institute (EBI).
 #'
@@ -26,6 +26,8 @@
 #' @importFrom utils URLencode
 #' @importFrom plyr rbind.fill ldply
 #' @importFrom jsonlite fromJSON rbind.pages
-#' @importFrom httr GET content stop_for_status
+#' @importFrom httr GET content stop_for_status status_code
 #' @importFrom dplyr %>% as_data_frame select_if data_frame bind_rows
+#' @importFrom stats runif
+#' @importFrom xml2 read_xml
 NULL

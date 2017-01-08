@@ -1,3 +1,9 @@
+# europepmc 0.1.1.9000
+
+- cache HTTP 500 errors which sometimes occur and re-try up to five times. It is based on [googlesheet's approach](https://github.com/jennybc/googlesheets/commit/a91403ecb8ab5d8059bf14a9f9878ab68a829f0a)
+- new function `epmc_profile()` to get an overview of hit counts for several databases or publication types
+- update imported packages in DESCRIPTION
+
 # europepmc 0.1.1
 
 Implement [RESTful API v4.5.3](https://europepmc.org/docs/Europe_PMC_RESTful_Release_Notes.pdf)
