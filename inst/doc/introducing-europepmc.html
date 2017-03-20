@@ -165,72 +165,72 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>For instance, search for abstracts and full texts that mention <a href="https://www.gabi-kat.de/"><code>Gabi-Kat</code></a>, a Flanking Sequence Tag (FST)-based database for T-DNA insertion mutants:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmc_search</span>(<span class="dt">query =</span> <span class="st">'Gabi-Kat'</span>)
 <span class="co">#&gt; # A tibble: 100 × 27</span>
-<span class="co">#&gt;          id source     pmid                                doi</span>
-<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                              &lt;chr&gt;</span>
-<span class="co">#&gt; 1  28013277    MED 28013277                 10.1093/pcp/pcw205</span>
-<span class="co">#&gt; 2  22080561    MED 22080561                10.1093/nar/gkr1047</span>
-<span class="co">#&gt; 3  17062622    MED 17062622                 10.1093/nar/gkl753</span>
-<span class="co">#&gt; 4  14756321    MED 14756321 10.1023/b:plan.0000009297.37235.4a</span>
-<span class="co">#&gt; 5  12874060    MED 12874060      10.1093/bioinformatics/btg170</span>
-<span class="co">#&gt; 6  25324895    MED 25324895            10.1186/1746-4811-10-28</span>
-<span class="co">#&gt; 7  26343971    MED 26343971         10.1016/j.molp.2015.08.011</span>
-<span class="co">#&gt; 8  27117628    MED 27117628                  10.1038/srep24971</span>
-<span class="co">#&gt; 9  26493293    MED 26493293                  10.1111/tpj.13062</span>
-<span class="co">#&gt; 10 27018849    MED 27018849      10.1080/15592324.2016.1161876</span>
-<span class="co">#&gt; # ... with 90 more rows, and 23 more variables: title &lt;chr&gt;,</span>
+<span class="co">#&gt;          id source     pmid</span>
+<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;</span>
+<span class="co">#&gt; 1  28013277    MED 28013277</span>
+<span class="co">#&gt; 2  22080561    MED 22080561</span>
+<span class="co">#&gt; 3  17062622    MED 17062622</span>
+<span class="co">#&gt; 4  14756321    MED 14756321</span>
+<span class="co">#&gt; 5  12874060    MED 12874060</span>
+<span class="co">#&gt; 6  25324895    MED 25324895</span>
+<span class="co">#&gt; 7  26343971    MED 26343971</span>
+<span class="co">#&gt; 8  27117628    MED 27117628</span>
+<span class="co">#&gt; 9  26493293    MED 26493293</span>
+<span class="co">#&gt; 10 27018849    MED 27018849</span>
+<span class="co">#&gt; # ... with 90 more rows, and 24 more variables: doi &lt;chr&gt;, title &lt;chr&gt;,</span>
 <span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, pubYear &lt;chr&gt;,</span>
-<span class="co">#&gt; #   journalIssn &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;,</span>
-<span class="co">#&gt; #   inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;,</span>
-<span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span>
-<span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;, epmcAuthMan &lt;chr&gt;,</span>
-<span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, pmcid &lt;chr&gt;, issue &lt;chr&gt;,</span>
-<span class="co">#&gt; #   journalVolume &lt;chr&gt;, pageInfo &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></code></pre></div>
+<span class="co">#&gt; #   journalIssn &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span>
+<span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span>
+<span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span>
+<span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, epmcAuthMan &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span>
+<span class="co">#&gt; #   pmcid &lt;chr&gt;, issue &lt;chr&gt;, journalVolume &lt;chr&gt;, pageInfo &lt;chr&gt;,</span>
+<span class="co">#&gt; #   pubType &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></code></pre></div>
 <p>Get PLOS Genetics (ISSN:1553-7404) articles that cross-reference EMBL:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmc_search</span>(<span class="dt">query =</span> <span class="st">'ISSN:1553-7404 HAS_EMBL:y'</span>)
 <span class="co">#&gt; # A tibble: 100 × 27</span>
-<span class="co">#&gt;          id source     pmid      pmcid                          doi</span>
-<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;                        &lt;chr&gt;</span>
-<span class="co">#&gt; 1  27780204    MED 27780204 PMC5079590 10.1371/journal.pgen.1006397</span>
-<span class="co">#&gt; 2  27764113    MED 27764113 PMC5072692 10.1371/journal.pgen.1006387</span>
-<span class="co">#&gt; 3  27541862    MED 27541862 PMC4991801 10.1371/journal.pgen.1006270</span>
-<span class="co">#&gt; 4  27327578    MED 27327578 PMC4915694 10.1371/journal.pgen.1006110</span>
-<span class="co">#&gt; 5  27203426    MED 27203426 PMC4874600 10.1371/journal.pgen.1006063</span>
-<span class="co">#&gt; 6  27149082    MED 27149082 PMC4858218 10.1371/journal.pgen.1006030</span>
-<span class="co">#&gt; 7  27120580    MED 27120580 PMC4847869 10.1371/journal.pgen.1005987</span>
-<span class="co">#&gt; 8  27082250    MED 27082250 PMC4833346 10.1371/journal.pgen.1005954</span>
-<span class="co">#&gt; 9  26982327    MED 26982327 PMC4794157 10.1371/journal.pgen.1005920</span>
-<span class="co">#&gt; 10 26637114    MED 26637114 PMC4670201 10.1371/journal.pgen.1005681</span>
-<span class="co">#&gt; # ... with 90 more rows, and 22 more variables: title &lt;chr&gt;,</span>
+<span class="co">#&gt;          id source     pmid                                          doi</span>
+<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                                        &lt;chr&gt;</span>
+<span class="co">#&gt; 1  28222092    MED 28222092                 10.1371/journal.pgen.1006596</span>
+<span class="co">#&gt; 2  27780204    MED 27780204                 10.1371/journal.pgen.1006397</span>
+<span class="co">#&gt; 3  27764113    MED 27764113                 10.1371/journal.pgen.1006387</span>
+<span class="co">#&gt; 4  27541862    MED 27541862                 10.1371/journal.pgen.1006270</span>
+<span class="co">#&gt; 5  27385107    MED 27385107                 10.1371/journal.pgen.1006155</span>
+<span class="co">#&gt; 6  27327578    MED 27327578 https://doi.org/10.1371/journal.pgen.1006110</span>
+<span class="co">#&gt; 7  27203426    MED 27203426                 10.1371/journal.pgen.1006063</span>
+<span class="co">#&gt; 8  27149082    MED 27149082                 10.1371/journal.pgen.1006030</span>
+<span class="co">#&gt; 9  27120580    MED 27120580 https://doi.org/10.1371/journal.pgen.1005987</span>
+<span class="co">#&gt; 10 27082250    MED 27082250 https://doi.org/10.1371/journal.pgen.1005954</span>
+<span class="co">#&gt; # ... with 90 more rows, and 23 more variables: title &lt;chr&gt;,</span>
 <span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, issue &lt;chr&gt;,</span>
 <span class="co">#&gt; #   journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;,</span>
 <span class="co">#&gt; #   pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span>
-<span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;,</span>
-<span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span>
-<span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;, epmcAuthMan &lt;chr&gt;,</span>
-<span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;</span></code></pre></div>
+<span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span>
+<span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span>
+<span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, epmcAuthMan &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span>
+<span class="co">#&gt; #   pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></code></pre></div>
 <p>Use <a href="https://orcid.org/">ORCID</a> to search for personal publications:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmc_search</span>(<span class="dt">query =</span> <span class="st">'AUTHORID:&quot;0000-0002-7635-3473&quot;'</span>, <span class="dt">limit =</span> <span class="dv">1000</span>)
 <span class="co">#&gt; # A tibble: 132 × 27</span>
-<span class="co">#&gt;          id source     pmid                          doi</span>
-<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                        &lt;chr&gt;</span>
-<span class="co">#&gt; 1  28013277    MED 28013277           10.1093/pcp/pcw205</span>
-<span class="co">#&gt; 2  27711162    MED 27711162 10.1371/journal.pone.0164321</span>
-<span class="co">#&gt; 3  27230558    MED 27230558    10.1186/s12870-016-0805-5</span>
-<span class="co">#&gt; 4  27214749    MED 27214749            10.1111/nph.14008</span>
-<span class="co">#&gt; 5  26980001    MED 26980001    10.1186/s12864-016-2566-9</span>
-<span class="co">#&gt; 6  27557761    MED 27557761  10.1007/978-1-4939-6396-6_5</span>
-<span class="co">#&gt; 7  26676716    MED 26676716            10.1111/tpj.13103</span>
-<span class="co">#&gt; 8  26343971    MED 26343971   10.1016/j.molp.2015.08.011</span>
-<span class="co">#&gt; 9  26328666    MED 26328666    10.1186/s13059-015-0729-7</span>
-<span class="co">#&gt; 10 27660776    MED 27660776     10.1128/genomea.00975-16</span>
+<span class="co">#&gt;          id source     pmid                                      doi</span>
+<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                                    &lt;chr&gt;</span>
+<span class="co">#&gt; 1  28013277    MED 28013277                       10.1093/pcp/pcw205</span>
+<span class="co">#&gt; 2  27711162    MED 27711162             10.1371/journal.pone.0164321</span>
+<span class="co">#&gt; 3  27230558    MED 27230558                10.1186/s12870-016-0805-5</span>
+<span class="co">#&gt; 4  27214749    MED 27214749                        10.1111/nph.14008</span>
+<span class="co">#&gt; 5  26980001    MED 26980001                10.1186/s12864-016-2566-9</span>
+<span class="co">#&gt; 6  27557761    MED 27557761              10.1007/978-1-4939-6396-6_5</span>
+<span class="co">#&gt; 7  26676716    MED 26676716                        10.1111/tpj.13103</span>
+<span class="co">#&gt; 8  26343971    MED 26343971               10.1016/j.molp.2015.08.011</span>
+<span class="co">#&gt; 9  26328666    MED 26328666                10.1186/s13059-015-0729-7</span>
+<span class="co">#&gt; 10 27660776    MED 27660776 https://doi.org/10.1128/genomea.00975-16</span>
 <span class="co">#&gt; # ... with 122 more rows, and 23 more variables: title &lt;chr&gt;,</span>
 <span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, pubYear &lt;chr&gt;,</span>
-<span class="co">#&gt; #   journalIssn &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;,</span>
-<span class="co">#&gt; #   inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;,</span>
-<span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span>
-<span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;, epmcAuthMan &lt;chr&gt;,</span>
-<span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, pmcid &lt;chr&gt;, issue &lt;chr&gt;,</span>
-<span class="co">#&gt; #   journalVolume &lt;chr&gt;, pageInfo &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></code></pre></div>
+<span class="co">#&gt; #   journalIssn &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span>
+<span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span>
+<span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span>
+<span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, epmcAuthMan &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span>
+<span class="co">#&gt; #   pmcid &lt;chr&gt;, issue &lt;chr&gt;, journalVolume &lt;chr&gt;, pageInfo &lt;chr&gt;,</span>
+<span class="co">#&gt; #   pubType &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></code></pre></div>
 </div>
 <div id="include-mesh-and-uniprot-synonyms" class="section level3">
 <h3>Include MeSH and UniProt synonyms</h3>
@@ -238,50 +238,50 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># with snyonyms</span>
 <span class="kw">epmc_search</span>(<span class="st">'aspirin'</span>, <span class="dt">synonym =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; # A tibble: 100 × 27</span>
-<span class="co">#&gt;          id source     pmid</span>
-<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;</span>
-<span class="co">#&gt; 1  28147891    MED 28147891</span>
-<span class="co">#&gt; 2  28142297    MED 28142297</span>
-<span class="co">#&gt; 3  28181214    MED 28181214</span>
-<span class="co">#&gt; 4  28213047    MED 28213047</span>
-<span class="co">#&gt; 5  28202405    MED 28202405</span>
-<span class="co">#&gt; 6  28205318    MED 28205318</span>
-<span class="co">#&gt; 7  28125730    MED 28125730</span>
-<span class="co">#&gt; 8  28189429    MED 28189429</span>
-<span class="co">#&gt; 9  28160159    MED 28160159</span>
-<span class="co">#&gt; 10 28159866    MED 28159866</span>
-<span class="co">#&gt; # ... with 90 more rows, and 24 more variables: title &lt;chr&gt;,</span>
+<span class="co">#&gt;          id source     pmid                                       doi</span>
+<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                                     &lt;chr&gt;</span>
+<span class="co">#&gt; 1  28147891    MED 28147891             10.1080/13880209.2017.1283706</span>
+<span class="co">#&gt; 2  28142297    MED 28142297             10.1080/15419061.2017.1282469</span>
+<span class="co">#&gt; 3  28258476    MED 28258476 https://doi.org/10.1007/s40800-017-0048-x</span>
+<span class="co">#&gt; 4  28278500    MED 28278500                         10.1159/000464434</span>
+<span class="co">#&gt; 5  28293429    MED 28293429 https://doi.org/10.1186/s40780-017-0078-7</span>
+<span class="co">#&gt; 6  28292923    MED 28292923             10.1158/1055-9965.epi-16-1027</span>
+<span class="co">#&gt; 7  28301951    MED 28301951  https://doi.org/10.1177/1203475417697652</span>
+<span class="co">#&gt; 8  28265622    MED 28265622                        10.1039/c6cp08122c</span>
+<span class="co">#&gt; 9  28302605    MED 28302605        https://doi.org/10.3174/ajnr.a5113</span>
+<span class="co">#&gt; 10 28262342    MED 28262342              10.1016/j.ijcard.2017.02.122</span>
+<span class="co">#&gt; # ... with 90 more rows, and 23 more variables: title &lt;chr&gt;,</span>
 <span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, issue &lt;chr&gt;,</span>
 <span class="co">#&gt; #   journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;,</span>
 <span class="co">#&gt; #   pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span>
 <span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span>
 <span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span>
 <span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, epmcAuthMan &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span>
-<span class="co">#&gt; #   doi &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span>
+<span class="co">#&gt; #   pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span>
 
 <span class="co"># without synonyms</span>
 <span class="kw">epmc_search</span>(<span class="st">'aspirin'</span>, <span class="dt">synonym =</span> <span class="ot">FALSE</span>)
 <span class="co">#&gt; # A tibble: 100 × 27</span>
-<span class="co">#&gt;          id source     pmid</span>
-<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;</span>
-<span class="co">#&gt; 1  28147891    MED 28147891</span>
-<span class="co">#&gt; 2  28142297    MED 28142297</span>
-<span class="co">#&gt; 3  28181214    MED 28181214</span>
-<span class="co">#&gt; 4  28125730    MED 28125730</span>
-<span class="co">#&gt; 5  27888917    MED 27888917</span>
-<span class="co">#&gt; 6  28213047    MED 28213047</span>
-<span class="co">#&gt; 7  28213669    MED 28213669</span>
-<span class="co">#&gt; 8  28160159    MED 28160159</span>
-<span class="co">#&gt; 9  28163951    MED 28163951</span>
-<span class="co">#&gt; 10 28072691    MED 28072691</span>
-<span class="co">#&gt; # ... with 90 more rows, and 24 more variables: title &lt;chr&gt;,</span>
+<span class="co">#&gt;          id source     pmid                                         doi</span>
+<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                                       &lt;chr&gt;</span>
+<span class="co">#&gt; 1  28147891    MED 28147891               10.1080/13880209.2017.1283706</span>
+<span class="co">#&gt; 2  28278500    MED 28278500                           10.1159/000464434</span>
+<span class="co">#&gt; 3  28293429    MED 28293429   https://doi.org/10.1186/s40780-017-0078-7</span>
+<span class="co">#&gt; 4  28301951    MED 28301951    https://doi.org/10.1177/1203475417697652</span>
+<span class="co">#&gt; 5  28265622    MED 28265622                          10.1039/c6cp08122c</span>
+<span class="co">#&gt; 6  28220610    MED 28220610                            10.1002/bio.3285</span>
+<span class="co">#&gt; 7  28292923    MED 28292923               10.1158/1055-9965.epi-16-1027</span>
+<span class="co">#&gt; 8  28289603    MED 28289603 https://doi.org/10.1016/j.gdata.2017.02.013</span>
+<span class="co">#&gt; 9  28181214    MED 28181214              10.1002/14651858.cd012129.pub2</span>
+<span class="co">#&gt; 10 28285696    MED 28285696               10.1016/j.lungcan.2017.01.018</span>
+<span class="co">#&gt; # ... with 90 more rows, and 23 more variables: title &lt;chr&gt;,</span>
 <span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, issue &lt;chr&gt;,</span>
 <span class="co">#&gt; #   journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;,</span>
 <span class="co">#&gt; #   pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span>
 <span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span>
 <span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span>
 <span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, epmcAuthMan &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span>
-<span class="co">#&gt; #   doi &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></code></pre></div>
+<span class="co">#&gt; #   pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></code></pre></div>
 </div>
 <div id="output-types" class="section level3">
 <h3>Output types</h3>
@@ -291,26 +291,26 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Key metadata parsed as non-nested tibble:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmc_search</span>(<span class="st">'Gabi-Kat'</span>, <span class="dt">output =</span> <span class="st">'parsed'</span>)
 <span class="co">#&gt; # A tibble: 100 × 27</span>
-<span class="co">#&gt;          id source     pmid                                doi</span>
-<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                              &lt;chr&gt;</span>
-<span class="co">#&gt; 1  28013277    MED 28013277                 10.1093/pcp/pcw205</span>
-<span class="co">#&gt; 2  22080561    MED 22080561                10.1093/nar/gkr1047</span>
-<span class="co">#&gt; 3  17062622    MED 17062622                 10.1093/nar/gkl753</span>
-<span class="co">#&gt; 4  14756321    MED 14756321 10.1023/b:plan.0000009297.37235.4a</span>
-<span class="co">#&gt; 5  12874060    MED 12874060      10.1093/bioinformatics/btg170</span>
-<span class="co">#&gt; 6  25324895    MED 25324895            10.1186/1746-4811-10-28</span>
-<span class="co">#&gt; 7  26343971    MED 26343971         10.1016/j.molp.2015.08.011</span>
-<span class="co">#&gt; 8  27117628    MED 27117628                  10.1038/srep24971</span>
-<span class="co">#&gt; 9  26493293    MED 26493293                  10.1111/tpj.13062</span>
-<span class="co">#&gt; 10 27018849    MED 27018849      10.1080/15592324.2016.1161876</span>
-<span class="co">#&gt; # ... with 90 more rows, and 23 more variables: title &lt;chr&gt;,</span>
+<span class="co">#&gt;          id source     pmid</span>
+<span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;</span>
+<span class="co">#&gt; 1  28013277    MED 28013277</span>
+<span class="co">#&gt; 2  22080561    MED 22080561</span>
+<span class="co">#&gt; 3  17062622    MED 17062622</span>
+<span class="co">#&gt; 4  14756321    MED 14756321</span>
+<span class="co">#&gt; 5  12874060    MED 12874060</span>
+<span class="co">#&gt; 6  25324895    MED 25324895</span>
+<span class="co">#&gt; 7  26343971    MED 26343971</span>
+<span class="co">#&gt; 8  27117628    MED 27117628</span>
+<span class="co">#&gt; 9  26493293    MED 26493293</span>
+<span class="co">#&gt; 10 27018849    MED 27018849</span>
+<span class="co">#&gt; # ... with 90 more rows, and 24 more variables: doi &lt;chr&gt;, title &lt;chr&gt;,</span>
 <span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, pubYear &lt;chr&gt;,</span>
-<span class="co">#&gt; #   journalIssn &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;,</span>
-<span class="co">#&gt; #   inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;,</span>
-<span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span>
-<span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;, epmcAuthMan &lt;chr&gt;,</span>
-<span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, pmcid &lt;chr&gt;, issue &lt;chr&gt;,</span>
-<span class="co">#&gt; #   journalVolume &lt;chr&gt;, pageInfo &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></code></pre></div>
+<span class="co">#&gt; #   journalIssn &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span>
+<span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span>
+<span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span>
+<span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, epmcAuthMan &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span>
+<span class="co">#&gt; #   pmcid &lt;chr&gt;, issue &lt;chr&gt;, journalVolume &lt;chr&gt;, pageInfo &lt;chr&gt;,</span>
+<span class="co">#&gt; #   pubType &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></code></pre></div>
 <p>In addition to fetch bibliographic metadata, the parsed output also helps you to get a general overview about additional information types that are offered by Europe PMC and which can be retrieved through other <code>europepmc</code>-functions. Columns inform whether open access full texts (<code>isOpenAccess</code>), cross-links to other EBI databases (<code>hasDbCrossReferences</code>), text-mined terms (<code>hasTextMinedTerms</code>) or references (<code>hasReferences</code>) are available.</p>
 </div>
 <div id="ids" class="section level4">
@@ -381,8 +381,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt;   .. ..$ medlineAbbreviation: chr &quot;Plant Signal Behav&quot;</span>
 <span class="co">#&gt;   .. ..$ essn               : chr &quot;1559-2324&quot;</span>
 <span class="co">#&gt;   .. ..$ issn               : chr &quot;1559-2316&quot;</span>
-<span class="co">#&gt;   .. ..$ isoabbreviation    : chr &quot;Plant Signal Behav&quot;</span>
 <span class="co">#&gt;   .. ..$ nlmid              : chr &quot;101291431&quot;</span>
+<span class="co">#&gt;   .. ..$ isoabbreviation    : chr &quot;Plant Signal Behav&quot;</span>
 <span class="co">#&gt;  $ pubYear              : chr &quot;2016&quot;</span>
 <span class="co">#&gt;  $ pageInfo             : chr &quot;e1161876&quot;</span>
 <span class="co">#&gt;  $ abstractText         : chr &quot;The essential micronutrient vitamin B6 is best known in its enzymatic cofactor form, pyridoxal 5'-phosphate (PLP). However, vit&quot;| __truncated__</span>
@@ -390,7 +390,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt;  $ language             : chr &quot;eng&quot;</span>
 <span class="co">#&gt;  $ pubModel             : chr &quot;Print&quot;</span>
 <span class="co">#&gt;  $ pubTypeList          :List of 1</span>
-<span class="co">#&gt;   ..$ pubType: chr [1:3] &quot;addendum&quot; &quot;Journal Article&quot; &quot;Research Support, Non-U.S. Gov't&quot;</span>
+<span class="co">#&gt;   ..$ pubType: chr [1:3] &quot;Research Support, Non-U.S. Gov't&quot; &quot;addendum&quot; &quot;Journal Article&quot;</span>
 <span class="co">#&gt;  $ meshHeadingList      :List of 1</span>
 <span class="co">#&gt;   ..$ meshHeading:List of 9</span>
 <span class="co">#&gt;   .. ..$ :List of 3</span>
@@ -485,7 +485,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt;   .. .. ..$ availabilityCode: chr &quot;S&quot;</span>
 <span class="co">#&gt;   .. .. ..$ documentStyle   : chr &quot;doi&quot;</span>
 <span class="co">#&gt;   .. .. ..$ site            : chr &quot;DOI&quot;</span>
-<span class="co">#&gt;   .. .. ..$ url             : chr &quot;http://dx.doi.org/10.1080/15592324.2016.1161876&quot;</span>
+<span class="co">#&gt;   .. .. ..$ url             : chr &quot;https://doi.org/10.1080/15592324.2016.1161876&quot;</span>
 <span class="co">#&gt;  $ isOpenAccess         : chr &quot;N&quot;</span>
 <span class="co">#&gt;  $ inEPMC               : chr &quot;Y&quot;</span>
 <span class="co">#&gt;  $ inPMC                : chr &quot;N&quot;</span>
@@ -511,19 +511,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Count hits before with <code>epmc_hits</code> to define limit. For example, get list of ids that represent articles referencing DataCite DOIs:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query &lt;-<span class="st"> &quot;ACCESSION_TYPE:doi&quot;</span>
 <span class="kw">epmc_hits</span>(query)
-<span class="co">#&gt; [1] 7325</span>
+<span class="co">#&gt; [1] 7315</span>
 <span class="co"># set limit to 10 records</span>
 my_data &lt;-<span class="st"> </span><span class="kw">epmc_search</span>(<span class="dt">query =</span> query, <span class="dt">limit =</span> <span class="dv">10</span>)
 <span class="kw">head</span>(my_data)
 <span class="co">#&gt; # A tibble: 6 × 27</span>
-<span class="co">#&gt;         id source     pmid      pmcid                         doi</span>
-<span class="co">#&gt;      &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;                       &lt;chr&gt;</span>
-<span class="co">#&gt; 1 28079148    MED 28079148 PMC5228185           10.1038/srep40501</span>
-<span class="co">#&gt; 2 28097071    MED 28097071 PMC5228508          10.7717/peerj.2874</span>
-<span class="co">#&gt; 3 28097058    MED 28097058 PMC5228507          10.7717/peerj.2844</span>
-<span class="co">#&gt; 4 28071681    MED 28071681 PMC5223163           10.1038/srep40034</span>
-<span class="co">#&gt; 5 28071668    MED 28071668 PMC5223119           10.1038/srep40094</span>
-<span class="co">#&gt; 6 28069623    MED 28069623 PMC5223632 10.1136/bmjopen-2016-013420</span>
+<span class="co">#&gt;         id source     pmid      pmcid                                doi</span>
+<span class="co">#&gt;      &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;                              &lt;chr&gt;</span>
+<span class="co">#&gt; 1 28280457    MED 28280457 PMC5321675           10.3389/fnmol.2017.00048</span>
+<span class="co">#&gt; 2 28230794    MED 28230794       &lt;NA&gt; https://doi.org/10.3390/md15020048</span>
+<span class="co">#&gt; 3 28079148    MED 28079148 PMC5228185                  10.1038/srep40501</span>
+<span class="co">#&gt; 4 28097071    MED 28097071 PMC5228508                 10.7717/peerj.2874</span>
+<span class="co">#&gt; 5 28097058    MED 28097058 PMC5228507                 10.7717/peerj.2844</span>
+<span class="co">#&gt; 6 28071681    MED 28071681 PMC5223163                  10.1038/srep40034</span>
 <span class="co">#&gt; # ... with 22 more variables: title &lt;chr&gt;, authorString &lt;chr&gt;,</span>
 <span class="co">#&gt; #   journalTitle &lt;chr&gt;, journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;,</span>
 <span class="co">#&gt; #   journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;,</span>
@@ -533,7 +533,7 @@ my_data &lt;-<span class="st"> </span><span class="kw">epmc_search</span>(<span 
 <span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, epmcAuthMan &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span>
 <span class="co">#&gt; #   issue &lt;chr&gt;</span>
 <span class="kw">attr</span>(my_data, <span class="st">&quot;hit_count&quot;</span>)
-<span class="co">#&gt; [1] 7325</span></code></pre></div>
+<span class="co">#&gt; [1] 7315</span></code></pre></div>
 <p>You may also use <code>epmc_profile</code> to retrieve a summary of hit counts.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmc_profile</span>(<span class="dt">query =</span> <span class="st">'malaria'</span>)
 <span class="co">#&gt; $source</span>
@@ -545,20 +545,20 @@ my_data &lt;-<span class="st"> </span><span class="kw">epmc_search</span>(<span 
 <span class="co">#&gt; 3    CTX      7</span>
 <span class="co">#&gt; 4    ETH    179</span>
 <span class="co">#&gt; 5    HIR      4</span>
-<span class="co">#&gt; 6    MED 115008</span>
+<span class="co">#&gt; 6    MED 115538</span>
 <span class="co">#&gt; 7    PAT   2252</span>
 <span class="co">#&gt; 8    CIT      0</span>
-<span class="co">#&gt; 9    PMC  10376</span>
+<span class="co">#&gt; 9    PMC  10372</span>
 <span class="co">#&gt; 10   PPR      2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $pubType</span>
 <span class="co">#&gt; # A tibble: 5 × 2</span>
 <span class="co">#&gt;                  name  count</span>
 <span class="co">#&gt; *               &lt;chr&gt;  &lt;int&gt;</span>
-<span class="co">#&gt; 1                 ALL 128062</span>
-<span class="co">#&gt; 2           FULL TEXT  78542</span>
-<span class="co">#&gt; 3         OPEN ACCESS  34272</span>
-<span class="co">#&gt; 4              REVIEW  15551</span>
+<span class="co">#&gt; 1                 ALL 128588</span>
+<span class="co">#&gt; 2           FULL TEXT  79013</span>
+<span class="co">#&gt; 3         OPEN ACCESS  34583</span>
+<span class="co">#&gt; 4              REVIEW  15676</span>
 <span class="co">#&gt; 5 BOOKS AND DOCUMENTS     97</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $subset</span>
@@ -574,9 +574,9 @@ my_data &lt;-<span class="st"> </span><span class="kw">epmc_search</span>(<span 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmc_details</span>(<span class="dt">ext_id =</span> <span class="st">'24270414'</span>)
 <span class="co">#&gt; $basic</span>
 <span class="co">#&gt; # A tibble: 1 × 30</span>
-<span class="co">#&gt;         id source     pmid      pmcid              doi</span>
-<span class="co">#&gt; *    &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;            &lt;chr&gt;</span>
-<span class="co">#&gt; 1 24270414    MED 24270414 PMC3859427 10.1172/jci73168</span>
+<span class="co">#&gt;         id source     pmid      pmcid                              doi</span>
+<span class="co">#&gt; *    &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;                            &lt;chr&gt;</span>
+<span class="co">#&gt; 1 24270414    MED 24270414 PMC3859427 https://doi.org/10.1172/jci73168</span>
 <span class="co">#&gt; # ... with 25 more variables: title &lt;chr&gt;, authorString &lt;chr&gt;,</span>
 <span class="co">#&gt; #   pubYear &lt;chr&gt;, pageInfo &lt;chr&gt;, abstractText &lt;chr&gt;, language &lt;chr&gt;,</span>
 <span class="co">#&gt; #   pubModel &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span>
@@ -603,7 +603,7 @@ my_data &lt;-<span class="st"> </span><span class="kw">epmc_search</span>(<span 
 <span class="co">#&gt; # ... with 8 more variables: yearOfPublication &lt;int&gt;,</span>
 <span class="co">#&gt; #   printPublicationDate &lt;chr&gt;, journal.title &lt;chr&gt;,</span>
 <span class="co">#&gt; #   journal.medlineAbbreviation &lt;chr&gt;, journal.essn &lt;chr&gt;,</span>
-<span class="co">#&gt; #   journal.issn &lt;chr&gt;, journal.isoabbreviation &lt;chr&gt;, journal.nlmid &lt;chr&gt;</span>
+<span class="co">#&gt; #   journal.issn &lt;chr&gt;, journal.nlmid &lt;chr&gt;, journal.isoabbreviation &lt;chr&gt;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $ftx</span>
 <span class="co">#&gt; # A tibble: 5 × 5</span>
@@ -680,14 +680,14 @@ my_cites
 <span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;</span>
 <span class="co">#&gt; 1  10221475    MED</span>
 <span class="co">#&gt; 2  10342317    MED</span>
-<span class="co">#&gt; 3   9643812    MED</span>
-<span class="co">#&gt; 4  10440384    MED</span>
-<span class="co">#&gt; 5   9696842    MED</span>
-<span class="co">#&gt; 6   9703304    MED</span>
-<span class="co">#&gt; 7   9728974    MED</span>
-<span class="co">#&gt; 8   9728985    MED</span>
-<span class="co">#&gt; 9   9728986    MED</span>
-<span class="co">#&gt; 10  9728987    MED</span>
+<span class="co">#&gt; 3  10440384    MED</span>
+<span class="co">#&gt; 4   9696842    MED</span>
+<span class="co">#&gt; 5   9703304    MED</span>
+<span class="co">#&gt; 6   9728974    MED</span>
+<span class="co">#&gt; 7   9728985    MED</span>
+<span class="co">#&gt; 8   9728986    MED</span>
+<span class="co">#&gt; 9   9728987    MED</span>
+<span class="co">#&gt; 10 11134319    MED</span>
 <span class="co">#&gt; # ... with 90 more rows, and 10 more variables: citationType &lt;chr&gt;,</span>
 <span class="co">#&gt; #   title &lt;chr&gt;, authorString &lt;chr&gt;, journalAbbreviation &lt;chr&gt;,</span>
 <span class="co">#&gt; #   pubYear &lt;int&gt;, volume &lt;chr&gt;, issue &lt;chr&gt;, pageInfo &lt;chr&gt;,</span>
@@ -798,32 +798,20 @@ my_cites
 <p>With the External Link services, Europe PMC allows third parties to publish links from Europe PMC to other webpages. Current External Link providers, whose id can be found through Europe PMC’s Advanced Search interface, include Wikipedia, Dryad Digital Repository or the institutional repo of Bielefeld University. For more information, see <a href="http://europepmc.org/labslink" class="uri">http://europepmc.org/labslink</a>.</p>
 <p>Check availability and number of links:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmc_lablinks_count</span>(<span class="st">'PMC3986813'</span>, <span class="dt">data_src =</span> <span class="st">'pmc'</span>)
-<span class="co">#&gt; # A tibble: 5 × 2</span>
+<span class="co">#&gt; # A tibble: 4 × 2</span>
 <span class="co">#&gt;       providerName linksCount</span>
 <span class="co">#&gt; *            &lt;chr&gt;      &lt;int&gt;</span>
 <span class="co">#&gt; 1 EBI Train Online          1</span>
 <span class="co">#&gt; 2        Wikipedia          1</span>
 <span class="co">#&gt; 3       BioStudies          1</span>
-<span class="co">#&gt; 4          Publons          1</span>
-<span class="co">#&gt; 5        Altmetric          1</span></code></pre></div>
-<p>Get links to PANGEA (<code>lab_id = &quot;1342&quot;</code>)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmc_lablinks</span>(<span class="st">'24023770'</span>, <span class="dt">lab_id =</span> <span class="st">'1342'</span>)
-<span class="co">#&gt; # A tibble: 13 × 6</span>
-<span class="co">#&gt;                                                                          title</span>
-<span class="co">#&gt;                                                                          &lt;chr&gt;</span>
-<span class="co">#&gt; 1  Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 2  Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 3  Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 4  Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 5  Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 6  Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 7  Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 8  Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 9  Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 10 Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 11 Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 12 Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
-<span class="co">#&gt; 13 Related to: Schewe, I (2010). Biochemical investigation of multicorer sedim</span>
+<span class="co">#&gt; 4        Altmetric          1</span></code></pre></div>
+<p>Get links from Wikipedia (<code>lab_id = '1507'</code>)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epmc_lablinks</span>(<span class="st">'20301687'</span>, <span class="dt">lab_id =</span> <span class="st">'1507'</span>)
+<span class="co">#&gt; # A tibble: 2 × 6</span>
+<span class="co">#&gt;                                    title</span>
+<span class="co">#&gt;                                    &lt;chr&gt;</span>
+<span class="co">#&gt; 1                        Werner_syndrome</span>
+<span class="co">#&gt; 2 Werner_syndrome_ATP-dependent_helicase</span>
 <span class="co">#&gt; # ... with 5 more variables: url &lt;chr&gt;, imgUrl &lt;lgl&gt;, lab_id &lt;int&gt;,</span>
 <span class="co">#&gt; #   lab_name &lt;fctr&gt;, lab_description &lt;fctr&gt;</span></code></pre></div>
 </div>

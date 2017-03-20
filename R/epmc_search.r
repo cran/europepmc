@@ -57,11 +57,15 @@ epmc_search <- function(query = NULL,
                         verbose = TRUE,
                         limit = 100,
                         sort = NULL) {
-  query <- transform_query(query)
   stopifnot(is.logical(c(verbose, synonym)))
-  stopifnot(is.numeric(limit))
   # get the correct hit count when mesh and uniprot synonyms are also searched
   synonym <- ifelse(synonym == FALSE, "false", "true")
+  # this is so far the only way how I got the synonym paramworking after
+  # the API change.
+  # there is a possible conflict with the resumption token and decoding
+  # the API call.
+  query <- transform_query(paste0(query, "&synonym=", synonym))
+  stopifnot(is.numeric(limit))
   page_token <- "*"
   if (!output == "raw")
     results <- dplyr::data_frame()
@@ -72,7 +76,7 @@ epmc_search <- function(query = NULL,
       query = query,
       limit = limit,
       output = output,
-      synonym = synonym,
+#      synonym = synonym,
       verbose = verbose,
       page_token = page_token,
       sort = sort
@@ -84,7 +88,8 @@ epmc_search <- function(query = NULL,
     stop("There are no results matching your query")
   limit <- as.integer(limit)
   limit <- ifelse(hits <= limit, hits, limit)
-  # let's loop over until page max is reached, or until cursor marks are identical
+  # let's loop over until page max is reached,
+  # or until cursor marks are identical
   i <- 0
   while (i < res_chunks$page_max) {
     out <-
@@ -92,7 +97,7 @@ epmc_search <- function(query = NULL,
         query = query,
         limit = limit,
         output = output,
-        synonym = synonym,
+#        synonym = synonym,
         verbose = verbose,
         page_token = page_token,
         sort = sort
@@ -134,9 +139,6 @@ epmc_search <- function(query = NULL,
 #'   can become very large.
 #' @param limit integer, limit the number of records you wish to retrieve.
 #'   By default, 25 are returned.
-#' @param synonym logical, synonym search. If TRUE, synonym terms from MeSH
-#'  terminology and the UniProt synonym list are queried, too. Disabled by
-#'  default.
 #' @param sort character, sort results by order (\code{asc}, \code{desc}) and
 #'  sort field (e.g. \code{CITED}, \code{P_PDATE}), seperated with a blank.
 #'  For example, sort results  by times cited in descending order:
@@ -152,7 +154,7 @@ epmc_search_ <-
   function(query = NULL,
            limit = 100,
            output = "parsed",
-           synonym = FALSE,
+#           synonym = NULL,
            page_token = NULL,
            sort = NULL,
            ...) {
@@ -172,7 +174,7 @@ epmc_search_ <-
       list(
         query = query,
         format = "json",
-        synonym = synonym,
+#        synonym = synonym,
         resulttype = resulttype,
         pageSize = page_size,
         cursorMark = page_token,
@@ -181,7 +183,8 @@ epmc_search_ <-
     # call API
     out <-
       rebi_GET(path = paste0(rest_path(), "/search"), query = args)
-    # remove nested lists from resulting data.frame, get these infos with epmc_details
+    # remove nested lists from resulting data.frame, get these infos
+    # with epmc_details
     if (!resulttype == "core") {
       md <- out$resultList$result
       if (length(md) == 0) {

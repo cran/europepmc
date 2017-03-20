@@ -5,7 +5,7 @@
 \title{Get one page of results when searching Europe PubMed Central}
 \usage{
 epmc_search_(query = NULL, limit = 100, output = "parsed",
-  synonym = FALSE, page_token = NULL, sort = NULL, ...)
+  page_token = NULL, sort = NULL, ...)
 }
 \arguments{
 \item{query}{character, search query. For more information on how to
@@ -19,10 +19,6 @@ or 'raw' As default, parsed key metadata will be returned as data.frame.
 'id_list returns a list of IDs and sources.
 Use 'raw' to get full metadata as list. Please be aware that these lists
 can become very large.}
-
-\item{synonym}{logical, synonym search. If TRUE, synonym terms from MeSH
-terminology and the UniProt synonym list are queried, too. Disabled by
-default.}
 
 \item{page_token}{cursor marking the page}
 
