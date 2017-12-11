@@ -2,7 +2,7 @@
 
 # base uri
 base_uri <- function()
-  "http://www.ebi.ac.uk"
+  "https://www.ebi.ac.uk"
 
 # rest path
 rest_path <- function()
@@ -48,17 +48,6 @@ rebi_GET <- function(path = NULL, query = NULL, ...) {
     stop("No json to parse", call. = FALSE)
   return(doc)
 }
-
-# # build query
-# build_query <- function(query, page, batch_size, ...) {
-#   list(
-#     query = query,
-#     format = "json",
-#     page = page,
-#     pageSize = batch_size,
-#     ...
-#   )
-# }
 
 # Calculate pages. Each page consists of 25 records.
 rebi_pageing <- function(hitCount, pageSize) {
@@ -123,38 +112,6 @@ make_path <- function(hit_count = NULL,
   }
   paths
 }
-
-# make_queries <-
-#   function(hit_count = hit_count,
-#            limit = limit,
-#            query = query) {
-#     limit <- as.integer(limit)
-#     limit <- ifelse(hit_count <= limit, hit_count, limit)
-#     if (limit > batch_size()) {
-#       tt <- chunks(limit)
-#       queries <-
-#         lapply(1:(tt$page_max - 1),
-#                build_query,
-#                batch_size = batch_size(),
-#                query = query)
-#       queries <-
-#         append(queries, list(
-#           build_query(
-#             query = query,
-#             page = tt$page_max,
-#             batch_size = tt$last_chunk
-#           )
-#         ))
-#     } else {
-#       queries <-
-#         list(build_query(
-#           page = 1,
-#           query = query,
-#           batch_size = limit
-#         ))
-#     }
-#     queries
-#   }
 
 # calculate number of page chunks needed in accordance with limit param
 chunks <- function(limit, ...) {
@@ -224,3 +181,16 @@ VERB_n <- function(VERB, n = 5) {
 mpf <- function(...)
   message(sprintf(...))
 rGET <- VERB_n(httr::GET)
+
+#' Progress bar definition
+#'
+#' @param limit maximum number of hits to be returned
+#'
+#' @noRd
+pb <- function(limit) {
+  if(!is.integer(limit))
+    stop("Limit is not integer")
+  progress::progress_bar$new(total = limit / batch_size(),
+                                 format = "(:spin) [:bar] :percent",
+                                 clear = FALSE, width = 60)
+}

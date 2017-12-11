@@ -8,78 +8,50 @@ knitr::opts_chunk$set(
 
 ## ------------------------------------------------------------------------
 library(europepmc)
+europepmc::epmc_search('malaria')
 
 ## ------------------------------------------------------------------------
-epmc_search(query = 'Gabi-Kat')
+europepmc::epmc_search('malaria', synonym = FALSE)
 
 ## ------------------------------------------------------------------------
-epmc_search(query = 'ISSN:1553-7404 HAS_EMBL:y')
+europepmc::epmc_search('"Human malaria parasites"')
 
 ## ------------------------------------------------------------------------
-epmc_search(query = 'AUTHORID:"0000-0002-7635-3473"', limit = 1000)
+europepmc::epmc_search('"Human malaria parasites"', limit = 10)
 
 ## ------------------------------------------------------------------------
-# with snyonyms
-epmc_search('aspirin', synonym = TRUE)
-
-# without synonyms
-epmc_search('aspirin', synonym = FALSE)
-
-## ------------------------------------------------------------------------
-epmc_search('Gabi-Kat', output = 'parsed')
-
-## ------------------------------------------------------------------------
-epmc_search('Gabi-Kat', output = 'id_list')
+my_dois <- c(
+  "10.1159/000479962",
+  "10.1002/sctm.17-0081",
+  "10.1161/strokeaha.117.018077",
+  "10.1007/s12017-017-8447-9"
+  )
+  plyr::ldply(my_dois, function(x) {
+  europepmc::epmc_search(paste0("DOI:", x))
+  })
 
 ## ------------------------------------------------------------------------
-my_list <- epmc_search('Gabi-Kat', output = 'raw', limit = 10)
-# display the structure for one list element
-str(my_list[[10]])
+europepmc::epmc_search('AUTH:"Salmon Maelle"')
 
 ## ------------------------------------------------------------------------
-query <- "ACCESSION_TYPE:doi"
-epmc_hits(query)
-# set limit to 10 records
-my_data <- epmc_search(query = query, limit = 10)
-head(my_data)
-attr(my_data, "hit_count")
+q <- 'AUTH:"PÜHLER Alfred" OR AUTH:"Pühler Alfred Prof. Dr." OR AUTH:"Puhler A"'
+europepmc::epmc_search(q, limit = 1000)
 
 ## ------------------------------------------------------------------------
-epmc_profile(query = 'malaria')
+europepmc::epmc_search('AUTHORID:"0000-0002-7635-3473"', limit = 200, sort = "cited")
 
 ## ------------------------------------------------------------------------
-epmc_details(ext_id = '24270414')
+europepmc::epmc_search('disease:meningitis')
 
 ## ------------------------------------------------------------------------
-epmc_details(ext_id = '14756321')$author_details
+europepmc::epmc_search('(HAS_PDB:y) AND FIRST_PDATE:2016')
 
 ## ------------------------------------------------------------------------
-my_cites <- epmc_citations('9338777')
-my_cites
-# hits:
-attr(my_cites, 'hit_count')
+europepmc::epmc_citations("9338777", limit = 500)
 
 ## ------------------------------------------------------------------------
-epmc_refs('PMC3166943', data_src = 'pmc')
+europepmc::epmc_refs("28632490", limit = 200)
 
 ## ------------------------------------------------------------------------
-epmc_db_count('12368864')
-
-## ------------------------------------------------------------------------
-epmc_db('12368864', db = 'embl')
-
-## ------------------------------------------------------------------------
-epmc_tm_count('25249410')
-
-## ------------------------------------------------------------------------
-epmc_tm('25249410', semantic_type = 'GO_TERM')
-
-## ------------------------------------------------------------------------
-epmc_lablinks_count('PMC3986813', data_src = 'pmc')
-
-## ------------------------------------------------------------------------
-epmc_lablinks('20301687', lab_id = '1507')
-
-## ------------------------------------------------------------------------
-epmc_ftxt('PMC3257301')
+europepmc::epmc_ftxt("PMC3257301")
 

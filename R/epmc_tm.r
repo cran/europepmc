@@ -1,7 +1,6 @@
 #' Get text-mined terms
 #'
-#' Retrieve a count and list of terms text-mined from
-#' full text publications by Europe PMC.
+#' Retrieve a count and a list of text-mined terms gathered by Europe PMC.
 #'
 #'@inheritParams epmc_refs
 #'
@@ -17,7 +16,7 @@
 #'     \item{GO_TERM}{Gene Ontology Terms (\url{http://geneontology.org/})}
 #'     \item{ORGANISM}{organism}
 #'     }
-#' @return Terms found as data.frame
+#' @return Terms found as tibble
 #' @examples
 #' \dontrun{
 #' epmc_tm("25249410", semantic_type = "GO_TERM")
@@ -68,37 +67,44 @@ epmc_tm <-
                   sep = "/")
     doc <- rebi_GET(path = path)
     hit_count <- doc$hitCount
-    if (hit_count == 0)
-      stop("Sorry, no text-mined terms found")
-    paths <-
-      make_path(
-        hit_count = hit_count,
-        limit = limit,
-        ext_id = ext_id,
-        data_src = data_src,
-        req_method = req_method,
-        type = semantic_type
+    if (hit_count == 0) {
+      message("Sorry, no text-mined terms found")
+      result <- NULL
+    } else {
+      paths <-
+        make_path(
+          hit_count = hit_count,
+          limit = limit,
+          ext_id = ext_id,
+          data_src = data_src,
+          req_method = req_method,
+          type = semantic_type
+        )
+      out <- plyr::ldply(paths, function(x) {
+        if (verbose == TRUE)
+          message(paste0(
+            hit_count,
+            " records found. Returning ",
+            ifelse(hit_count <= limit, hit_count, limit)
+          ))
+        doc <- rebi_GET(path = x)
+        plyr::ldply(
+          doc$semanticTypeList$semanticType$tmSummary,
+          as.data.frame,
+          stringsAsFactors = FALSE,
+          .id = NULL
+        )
+      })
+      #combine all into one
+      result <- dplyr::data_frame(
+        term = out$term,
+        alt_term = out$altNameList$altName,
+        db_name = out$dbName,
+        db_ids = unlist(out$dbIdList$dbId)
       )
-    out <- lapply(paths, function(x) {
-      if (verbose == TRUE)
-        message(paste0(
-          hit_count,
-          " records found. Returning ",
-          ifelse(hit_count <= limit, hit_count, limit)
-        ))
-      doc <- rebi_GET(path = x)
-      plyr::ldply(
-        doc$semanticTypeList$semanticType$tmSummary,
-        data.frame,
-        stringsAsFactors = FALSE,
-        .id = NULL
-      )
-    })
-    #combine all into one
-    result <- jsonlite::rbind.pages(out) # %>%
-    # TO DO: unnest dplyr::as_data_frame()
-    # return
-    attr(result, "hit_count") <- hit_count
+      attr(result, "hit_count") <- hit_count
+    }
+    # result
     result
   }
 
