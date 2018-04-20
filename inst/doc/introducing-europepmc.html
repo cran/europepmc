@@ -12,7 +12,7 @@
 
 <meta name="author" content="Najko Jahn" />
 
-<meta name="date" content="2017-12-11" />
+<meta name="date" content="2018-04-20" />
 
 <title>Introducing europepmc, an R interface to Europe PMC RESTful API</title>
 
@@ -270,7 +270,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Introducing europepmc, an R interface to Europe PMC RESTful API</h1>
 <h4 class="author"><em>Najko Jahn</em></h4>
-<h4 class="date"><em>2017-12-11</em></h4>
+<h4 class="date"><em>2018-04-20</em></h4>
 
 
 
@@ -283,7 +283,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 <p>For more background on Europe PMC, see:</p>
 <p><a href="https://europepmc.org/About" class="uri">https://europepmc.org/About</a></p>
-<p>Europe PMC: a full-text literature database for the life sciences and platform for innovation. (2014). Nucleic Acids Research, 43(D1), D1042–D1048. <a href="http://doi.org/10.1093/nar/gku1061" class="uri">http://doi.org/10.1093/nar/gku1061</a></p>
+<p>Levchenko, M., Gou, Y., Graef, F., Hamelers, A., Huang, Z., Ide-Smith, M., … McEntyre, J. (2017). Europe PMC in 2017. Nucleic Acids Research, 46(D1), D1254–D1260. <a href="https://doi.org/10.1093/nar/gkx1005" class="uri">https://doi.org/10.1093/nar/gkx1005</a></p>
 </div>
 <div id="how-to-search-europe-pmc-with-r" class="section level2">
 <h2>How to search Europe PMC with R?</h2>
@@ -295,98 +295,94 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(europepmc)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'malaria'</span>)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; # A tibble: 100 x 27</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt;          id source     pmid      pmcid                          doi</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;                        &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt;  1 29213208    MED 29213208 PMC5713003    10.1186/s41182-017-0070-9</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt;  2 29203789    MED 29203789 PMC5714960   10.1038/s41598-017-16974-2</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt;  3 29182619    MED 29182619 PMC5705151 10.1371/journal.pone.0188613</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;  4 29212553    MED 29212553       &lt;NA&gt;    10.1186/s13071-017-2548-z</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;  5 29190291    MED 29190291       &lt;NA&gt; 10.1371/journal.pmed.1002455</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;  6 29206655    MED 29206655       &lt;NA&gt; 10.1097/qco.0000000000000419</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;  7 29155671    MED 29155671 PMC5711327       10.3201/eid2313.170366</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt;  8 29183370    MED 29183370 PMC5706414    10.1186/s12936-017-2130-3</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;  9 29217416    MED 29217416       &lt;NA&gt; 10.1016/j.parint.2017.12.002</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; 10 29162102    MED 29162102 PMC5697109    10.1186/s12936-017-2116-1</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; # ... with 90 more rows, and 22 more variables: title &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, journalVolume &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; #   hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;, issue &lt;chr&gt;</span></a></code></pre>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt;    id     source pmid   doi    title     authorString   journalTitle issue</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt;  1 29322… MED    29322… 10.10… Anion in… Vullo D, Syrj… J Enzyme In… 1    </span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt;  2 29497… MED    29497… 10.71… Motivati… Winn LK, Less… J Glob Heal… 1    </span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt;  3 29412… MED    29412… 10.10… Advances… Ragavan KV, K… Biosens Bio… &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;  4 29661… MED    29661… 10.11… Socioeco… Were V, Buff … Malar J      1    </span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;  5 29671… MED    29671… 10.33… Mapping … Ferrao JL, Ni… Int J Envir… 4    </span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;  6 29619… MED    29619… 10.71… Quantify… Krezanoski PJ… J Glob Heal… 1    </span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;  7 29636… MED    29636… 10.11… &quot;Scaling… Faye S, Cico … Malar J      1    </span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt;  8 29649… MED    29649… 10.15… Updated … Ballard SB, S… MMWR Morb M… 14   </span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;  9 29661… MED    29661… 10.11… Factors … Awuah RB, Asa… Malar J      1    </span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; 10 29652… MED    29652… 10.13… Cost of … Dalaba MA, We… PLoS One     4    </span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; # ... with 90 more rows, and 19 more variables: journalVolume &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; #   hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
 <p>Please note that Europe PMC expands queries with MeSH synonyms by default, a behaviour which can be turned off with the <code>synonym</code> parameter.</p>
 <pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'malaria'</span>, <span class="dt">synonym =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; # A tibble: 100 x 27</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;          id source     pmid      pmcid                          doi</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;                        &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;  1 29182619    MED 29182619 PMC5705151 10.1371/journal.pone.0188613</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;  2 29213208    MED 29213208 PMC5713003    10.1186/s41182-017-0070-9</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;  3 29162102    MED 29162102 PMC5697109    10.1186/s12936-017-2116-1</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;  4 29190291    MED 29190291       &lt;NA&gt; 10.1371/journal.pmed.1002455</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;  5 29162098    MED 29162098 PMC5697090    10.1186/s12936-017-2120-5</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;  6 29212553    MED 29212553       &lt;NA&gt;    10.1186/s13071-017-2548-z</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;  7 29143637    MED 29143637 PMC5688465    10.1186/s12889-017-4739-0</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;  8 29206991    MED 29206991       &lt;NA&gt;        10.1093/tropej/fmx090</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;  9 29203789    MED 29203789 PMC5714960   10.1038/s41598-017-16974-2</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 10 29117114    MED 29117114 PMC5707999       10.3390/ijerph14111360</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 22 more variables: title &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, issue &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; #   journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; #   pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;</span></a></code></pre>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;    id     source pmid   doi    title     authorString   journalTitle issue</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;  1 29322… MED    29322… 10.10… Anion in… Vullo D, Syrj… J Enzyme In… 1    </span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;  2 29497… MED    29497… 10.71… Motivati… Winn LK, Less… J Glob Heal… 1    </span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;  3 29412… MED    29412… 10.10… Advances… Ragavan KV, K… Biosens Bio… &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;  4 29661… MED    29661… 10.11… Socioeco… Were V, Buff … Malar J      1    </span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;  5 29671… MED    29671… 10.33… Mapping … Ferrao JL, Ni… Int J Envir… 4    </span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;  6 29661… MED    29661… 10.11… Factors … Awuah RB, Asa… Malar J      1    </span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;  7 29614… MED    29614… 10.13… Transfus… Iheonu FO, Fa… PLoS One     4    </span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;  8 29625… MED    29625… 10.11… A 17-yea… Tesfa H, Bayi… Malar J      1    </span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;  9 29652… MED    29652… 10.13… Cost of … Dalaba MA, We… PLoS One     4    </span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 10 29615… MED    29615… 10.11… A review… Muchena G, Du… Malar J      1    </span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 19 more variables: journalVolume &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; #   hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
 <p>To get an exact match, use quotes as in the following example:</p>
 <pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'&quot;Human malaria parasites&quot;'</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 100 x 27</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;            id source     pmid                           doi</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                         &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;  1   29109165    MED 29109165          10.1128/aac.01161-17</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  2   28902970    MED 28902970             10.1111/cmi.12789</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;  3   27894375    MED 27894375     10.1017/s0031182016002110</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;  4   28900620    MED 28900620          10.1155/2017/2847548</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;  5   28525963    MED 28525963 10.1080/14760584.2017.1333426</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt;  6   27748213    MED 27748213                          &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;  7 PMC5576395    PMC     &lt;NA&gt;                          &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;  8   27381764    MED 27381764  10.1016/j.ijpara.2016.05.008</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  9   28531172    MED 28531172  10.1371/journal.pone.0177304</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 10   27667688    MED 27667688     10.1016/j.dci.2016.09.012</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 23 more variables: title &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, pubYear &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; #   journalIssn &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; #   inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;, issue &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt; #   journalVolume &lt;chr&gt;, pageInfo &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;    id     source pmid   doi    title    authorString    journalTitle issue</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;           &lt;chr&gt;        &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;  1 29109… MED    29109… 10.11… Validat… Uddin T, McFad… Antimicrob … 1    </span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  2 28902… MED    28902… 10.11… A genet… Sayers CP, Mol… Cell Microb… 1    </span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;  3 27894… MED    27894… 10.10… Plasmod… Maeno Y, Culle… Parasitology 4    </span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;  4 28900… MED    28900… 10.11… Can Mix… Singh US, Siwa… Biomed Res … &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;  5 29669… MED    29669… 10.11… The bio… Awono-Ambene P… Parasit Vec… 1    </span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt;  6 29370… MED    29370… 10.13… A novel… Komaki-Yasuda … PLoS One     1    </span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;  7 27748… MED    27748… 10.10… Non-hum… Martinelli A, … Parasitology 1    </span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;  8 PMC55… PMC    &lt;NA&gt;   &lt;NA&gt;   Can Mix… Singh US, Siwa… Biomed Res … &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  9 28525… MED    28525… 10.10… The use… Othman AS, Mar… Expert Rev … 7    </span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 10 28531… MED    28531… 10.13… Experim… Singh N, Barne… PLoS One     5    </span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 19 more variables: journalVolume &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; #   inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; #   citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt; #   pageInfo &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
 </div>
 <div id="managing-search-results" class="section level3">
 <h3>Managing search results</h3>
 <p>By default, 100 records are returned, but the number of results can be expanded or limited with the <code>limit</code> parameter.</p>
 <pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'&quot;Human malaria parasites&quot;'</span>, <span class="dt">limit =</span> <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 27</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;            id source     pmid                           doi</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                         &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;  1   29109165    MED 29109165          10.1128/aac.01161-17</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;  2   28902970    MED 28902970             10.1111/cmi.12789</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  3   27894375    MED 27894375     10.1017/s0031182016002110</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  4   28900620    MED 28900620          10.1155/2017/2847548</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  5   28525963    MED 28525963 10.1080/14760584.2017.1333426</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  6   27748213    MED 27748213                          &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;  7 PMC5576395    PMC     &lt;NA&gt;                          &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;  8   27381764    MED 27381764  10.1016/j.ijpara.2016.05.008</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;  9   28531172    MED 28531172  10.1371/journal.pone.0177304</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; 10   27667688    MED 27667688     10.1016/j.dci.2016.09.012</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; # ... with 23 more variables: title &lt;chr&gt;, authorString &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; #   journalTitle &lt;chr&gt;, pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; #   hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, issue &lt;chr&gt;, journalVolume &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; #   pageInfo &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;    id     source pmid   doi    title    authorString    journalTitle issue</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;           &lt;chr&gt;        &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;  1 29109… MED    29109… 10.11… Validat… Uddin T, McFad… Antimicrob … 1    </span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;  2 28902… MED    28902… 10.11… A genet… Sayers CP, Mol… Cell Microb… 1    </span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  3 27894… MED    27894… 10.10… Plasmod… Maeno Y, Culle… Parasitology 4    </span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  4 28900… MED    28900… 10.11… Can Mix… Singh US, Siwa… Biomed Res … &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  5 29669… MED    29669… 10.11… The bio… Awono-Ambene P… Parasit Vec… 1    </span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  6 29370… MED    29370… 10.13… A novel… Komaki-Yasuda … PLoS One     1    </span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;  7 27748… MED    27748… 10.10… Non-hum… Martinelli A, … Parasitology 1    </span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;  8 PMC55… PMC    &lt;NA&gt;   &lt;NA&gt;   Can Mix… Singh US, Siwa… Biomed Res … &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;  9 28525… MED    28525… 10.10… The use… Othman AS, Mar… Expert Rev … 7    </span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; 10 28531… MED    28531… 10.13… Experim… Singh N, Barne… PLoS One     5    </span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; # ... with 19 more variables: journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; #   journalIssn &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; #   inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; #   pageInfo &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
 <p>Results are sorted by relevance. Other options via the <code>sort</code> parameter are</p>
 <ul>
 <li><code>sort = 'cited'</code> by the number of citation, descending from the most cited publication</li>
@@ -425,26 +421,31 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb5-27" data-line-number="27"><span class="co">#&gt; 2 Stem Cells Transl Med    11             6    2017 2157-6564; 2157-6580; </span></a>
 <a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co">#&gt; 3                Stroke    11            48    2017 0039-2499; 1524-4628; </span></a>
 <a class="sourceLine" id="cb5-29" data-line-number="29"><span class="co">#&gt; 4    Neuromolecular Med   2-3            19    2017 1535-1084; 1559-1174; </span></a>
-<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="co">#&gt;    pageInfo                             pubType isOpenAccess inEPMC inPMC</span></a>
-<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="co">#&gt; 1   264-269                     journal article            N      N     N</span></a>
-<a class="sourceLine" id="cb5-32" data-line-number="32"><span class="co">#&gt; 2 2044-2052           review; journal article;             N      N     N</span></a>
-<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="co">#&gt; 3 3152-3155   clinical trial; journal article;             N      N     N</span></a>
-<a class="sourceLine" id="cb5-34" data-line-number="34"><span class="co">#&gt; 4   309-321 research-article; journal article;             Y      Y     N</span></a>
-<a class="sourceLine" id="cb5-35" data-line-number="35"><span class="co">#&gt;   hasPDF hasBook citedByCount hasReferences hasTextMinedTerms</span></a>
-<a class="sourceLine" id="cb5-36" data-line-number="36"><span class="co">#&gt; 1      N       N            0             N                 N</span></a>
-<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="co">#&gt; 2      N       N            0             N                 N</span></a>
-<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="co">#&gt; 3      N       N            0             N                 N</span></a>
-<a class="sourceLine" id="cb5-39" data-line-number="39"><span class="co">#&gt; 4      Y       N            0             Y                 Y</span></a>
-<a class="sourceLine" id="cb5-40" data-line-number="40"><span class="co">#&gt;   hasDbCrossReferences hasLabsLinks hasTMAccessionNumbers</span></a>
-<a class="sourceLine" id="cb5-41" data-line-number="41"><span class="co">#&gt; 1                    N            Y                     N</span></a>
-<a class="sourceLine" id="cb5-42" data-line-number="42"><span class="co">#&gt; 2                    N            Y                     N</span></a>
-<a class="sourceLine" id="cb5-43" data-line-number="43"><span class="co">#&gt; 3                    N            Y                     N</span></a>
-<a class="sourceLine" id="cb5-44" data-line-number="44"><span class="co">#&gt; 4                    N            Y                     Y</span></a>
-<a class="sourceLine" id="cb5-45" data-line-number="45"><span class="co">#&gt;   firstPublicationDate      pmcid hasSuppl</span></a>
-<a class="sourceLine" id="cb5-46" data-line-number="46"><span class="co">#&gt; 1           2017-09-28       &lt;NA&gt;     &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb5-47" data-line-number="47"><span class="co">#&gt; 2           2017-09-23       &lt;NA&gt;     &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb5-48" data-line-number="48"><span class="co">#&gt; 3           2017-10-10       &lt;NA&gt;     &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb5-49" data-line-number="49"><span class="co">#&gt; 4           2017-06-16 PMC5570801        Y</span></a></code></pre>
+<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="co">#&gt;    pageInfo</span></a>
+<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="co">#&gt; 1   264-269</span></a>
+<a class="sourceLine" id="cb5-32" data-line-number="32"><span class="co">#&gt; 2 2044-2052</span></a>
+<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="co">#&gt; 3 3152-3155</span></a>
+<a class="sourceLine" id="cb5-34" data-line-number="34"><span class="co">#&gt; 4   309-321</span></a>
+<a class="sourceLine" id="cb5-35" data-line-number="35"><span class="co">#&gt;                                                               pubType</span></a>
+<a class="sourceLine" id="cb5-36" data-line-number="36"><span class="co">#&gt; 1                                                     journal article</span></a>
+<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="co">#&gt; 2                                           review; journal article; </span></a>
+<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="co">#&gt; 3 clinical trial; research support, non-u.s. gov't; journal article; </span></a>
+<a class="sourceLine" id="cb5-39" data-line-number="39"><span class="co">#&gt; 4                                 research-article; journal article; </span></a>
+<a class="sourceLine" id="cb5-40" data-line-number="40"><span class="co">#&gt;   isOpenAccess inEPMC inPMC hasPDF hasBook citedByCount hasReferences</span></a>
+<a class="sourceLine" id="cb5-41" data-line-number="41"><span class="co">#&gt; 1            N      N     N      N       N            0             Y</span></a>
+<a class="sourceLine" id="cb5-42" data-line-number="42"><span class="co">#&gt; 2            N      N     N      N       N            0             Y</span></a>
+<a class="sourceLine" id="cb5-43" data-line-number="43"><span class="co">#&gt; 3            N      N     N      N       N            1             N</span></a>
+<a class="sourceLine" id="cb5-44" data-line-number="44"><span class="co">#&gt; 4            Y      Y     N      Y       N            1             Y</span></a>
+<a class="sourceLine" id="cb5-45" data-line-number="45"><span class="co">#&gt;   hasTextMinedTerms hasDbCrossReferences hasLabsLinks</span></a>
+<a class="sourceLine" id="cb5-46" data-line-number="46"><span class="co">#&gt; 1                 N                    N            Y</span></a>
+<a class="sourceLine" id="cb5-47" data-line-number="47"><span class="co">#&gt; 2                 N                    N            Y</span></a>
+<a class="sourceLine" id="cb5-48" data-line-number="48"><span class="co">#&gt; 3                 N                    N            Y</span></a>
+<a class="sourceLine" id="cb5-49" data-line-number="49"><span class="co">#&gt; 4                 Y                    N            Y</span></a>
+<a class="sourceLine" id="cb5-50" data-line-number="50"><span class="co">#&gt;   hasTMAccessionNumbers firstPublicationDate      pmcid hasSuppl</span></a>
+<a class="sourceLine" id="cb5-51" data-line-number="51"><span class="co">#&gt; 1                     N           2017-09-28       &lt;NA&gt;     &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb5-52" data-line-number="52"><span class="co">#&gt; 2                     N           2017-09-23       &lt;NA&gt;     &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb5-53" data-line-number="53"><span class="co">#&gt; 3                     N           2017-10-10       &lt;NA&gt;     &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb5-54" data-line-number="54"><span class="co">#&gt; 4                     Y           2017-06-16 PMC5570801        Y</span></a></code></pre>
 </div>
 <div id="output-options" class="section level3">
 <h3>Output options</h3>
@@ -456,69 +457,68 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h4>Author search</h4>
 <p>Use the Europe PMC query syntax to search by author names:</p>
 <pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'AUTH:&quot;Salmon Maelle&quot;'</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 5 x 27</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;         id source     pmid      pmcid</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;      &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1 29088243    MED 29088243 PMC5663434</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; 2 28708095    MED 28708095 PMC5551221</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; 3 28606699    MED 28606699       &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; 4 27063588    MED 27063588       &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; 5 26250543    MED 26250543       &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; # ... with 23 more variables: doi &lt;chr&gt;, title &lt;chr&gt;, authorString &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; #   journalTitle &lt;chr&gt;, issue &lt;chr&gt;, journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; #   journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; #   inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; #   hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;</span></a></code></pre>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 7 x 27</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;   id     source pmid   doi   title authorString journalTitle journalVolume</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;        </span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1 29626… MED    29626… 10.1… Deve… Sanchez M, … Sci Total E… 634          </span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; 2 29330… MED    29330… 10.1… Heal… Mueller N, … Prev Med     109          </span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; 3 29088… MED    29088… 10.1… Time… Schumacher … PLoS One     12           </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; 4 28708… MED    28708… 10.3… Pred… Sanchez M, … Int J Envir… 14           </span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; 5 28606… MED    28606… 10.1… Inte… Tonne C, Sa… Int J Hyg E… 220          </span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; 6 27063… MED    27063… 10.2… A sy… Salmon M, S… Euro Survei… 21           </span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 7 26250… MED    26250… 10.1… Baye… Salmon M, S… Biom J       57           </span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; # ... with 19 more variables: pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; #   pageInfo &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; #   inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; #   issue &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
 <p><a href="https://europepmc.org/advancesearch">Europe PMC Advanced Search</a> has a auto-suggest field for author names if you feel unsure how the name you are searching for is indexed in Europe PMC. Using the Boolean <code>OR</code> operator you can simply search for more than one spelling variant:</p>
 <pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">q &lt;-<span class="st"> 'AUTH:&quot;PÜHLER Alfred&quot; OR AUTH:&quot;Pühler Alfred Prof. Dr.&quot; OR AUTH:&quot;Puhler A&quot;'</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(q, <span class="dt">limit =</span> <span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; # A tibble: 556 x 27</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;          id source     pmid                            doi</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                          &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;  1 29205917    MED 29205917        10.1111/1751-7915.12982</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;  2 29158776    MED 29158776      10.1186/s13068-017-0947-1</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  3 29092005    MED 29092005             10.1093/bib/bbx140</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  4 28917933    MED 28917933  10.1016/j.jbiotec.2017.09.008</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  5 28919459    MED 28919459  10.1016/j.jbiotec.2017.09.011</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  6 28856785    MED 28856785        10.1111/1462-2920.13901</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  7 28743243    MED 28743243      10.1186/s12864-017-3941-x</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  8 28713550    MED 28713550 10.12688/f1000research.11751.1</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  9 28597196    MED 28597196      10.1007/s00203-017-1394-x</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; 10 28595834    MED 28595834  10.1016/j.jbiotec.2017.05.027</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; # ... with 546 more rows, and 23 more variables: title &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, pubYear &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; #   journalIssn &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; #   inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt; #   journalVolume &lt;chr&gt;, pageInfo &lt;chr&gt;, hasSuppl &lt;chr&gt;, issue &lt;chr&gt;</span></a></code></pre>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; # A tibble: 558 x 27</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;    id     source pmid   doi   title   authorString    journalTitle pubYear</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;           &lt;chr&gt;        &lt;chr&gt;  </span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;  1 29463… MED    29463… 10.1… Comple… Wibberg D, Sal… Antimicrob … 2018   </span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;  2 29278… MED    29278… 10.1… Assemb… Verwaaijen B, … J Biotechnol 2018   </span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  3 29205… MED    29205… 10.1… Target… Stolze Y, Brem… Microb Biot… 2017   </span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  4 29158… MED    29158… 10.1… Genomi… Maus I, Bremge… Biotechnol … 2017   </span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  5 29092… MED    29092… 10.1… A gene… Mayer G, Quast… Brief Bioin… 2017   </span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  6 28919… MED    28919… 10.1… Genome… Lasek R, Dziew… J Biotechnol 2017   </span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  7 28917… MED    28917… 10.1… The co… Ortseifen V, K… J Biotechnol 2017   </span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  8 28856… MED    28856… 10.1… Lifest… Czarnecki J, D… Environ Mic… 2017   </span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  9 28743… MED    28743… 10.1… The Ma… Wolf T, Droste… BMC Genomics 2017   </span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; 10 28713… MED    28713… 10.1… A comm… Vizcaíno JA, W… F1000Res     2017   </span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; # ... with 548 more rows, and 19 more variables: journalIssn &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; #   pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, journalVolume &lt;chr&gt;, pageInfo &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; #   pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;, issue &lt;chr&gt;</span></a></code></pre>
 <p>There is a considerable overlap between common names. The integration of ORCID, a persistent author identifier, allows unambiguous search for personal publications in Europe PMC. For example, to search for publications written by Bernd Weisshaar (ORCID: <a href="https://orcid.org/0000-0002-7635-3473" class="uri">https://orcid.org/0000-0002-7635-3473</a>) sorted by the number of times cited in descending order:</p>
 <pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'AUTHORID:&quot;0000-0002-7635-3473&quot;'</span>, <span class="dt">limit =</span> <span class="dv">200</span>, <span class="dt">sort =</span> <span class="st">&quot;cited&quot;</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; # A tibble: 135 x 27</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;          id source     pmid                                doi</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                              &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;  1 21873998    MED 21873998                     10.1038/ng.919</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;  2 11597504    MED 11597504      10.1016/s1369-5266(00)00199-0</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;  3 20674465    MED 20674465      10.1016/j.tplants.2010.06.005</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;  4 11906833    MED 11906833      10.1016/s1360-1385(01)02223-3</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  5 14756321    MED 14756321 10.1023/b:plan.0000009297.37235.4a</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  6 11080161    MED 11080161           10.1093/emboj/19.22.6150</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;  7 12679534    MED 12679534              10.1093/molbev/msg088</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  8 15255866    MED 15255866   10.1111/j.1365-313x.2004.02138.x</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  9 15361138    MED 15361138   10.1111/j.1365-313x.2004.02183.x</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; 10 17419845    MED 17419845   10.1111/j.1365-313x.2007.03078.x</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; # ... with 125 more rows, and 23 more variables: title &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, issue &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; #   journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; #   pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; # A tibble: 133 x 27</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;    id     source pmid  doi   title  authorString        journalTitle issue</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;               &lt;chr&gt;        &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;  1 21873… MED    2187… 10.1… The g… Wang X, Wang H, Wa… Nat Genet    10   </span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;  2 11597… MED    1159… 10.1… The R… Stracke R, Werber … Curr Opin P… 5    </span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;  3 20674… MED    2067… 10.1… MYB t… Dubos C, Stracke R… Trends Plan… 10   </span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;  4 11906… MED    1190… 10.1… bZIP … Jakoby M, Weisshaa… Trends Plan… 3    </span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  5 14756… MED    1475… 10.1… An Ar… Rosso MG, Li Y, St… Plant Mol B… 1-2  </span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  6 11080… MED    1108… 10.1… Trans… Jin H, Cominelli E… EMBO J       22   </span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;  7 12679… MED    1267… 10.1… The b… Heim MA, Jakoby M,… Mol Biol Ev… 5    </span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  8 15361… MED    1536… 10.1… Compr… Zimmermann IM, Hei… Plant J      1    </span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  9 15255… MED    1525… 10.1… TT2, … Baudry A, Heim MA,… Plant J      3    </span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; 10 17419… MED    1741… 10.1… Diffe… Stracke R, Ishihar… Plant J      4    </span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; # ... with 123 more rows, and 19 more variables: journalVolume &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; #   hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
 </div>
 <div id="text-mined-terms" class="section level4">
 <h4>Text-mined terms</h4>
@@ -568,26 +568,25 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Here’s how to search for publications about meningitis:</p>
 <pre class="sourceCode r" id="cb9"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'disease:meningitis'</span>)</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; # A tibble: 100 x 27</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;            id source     pmid      pmcid                           doi</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;                         &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;  1   29095907    MED 29095907 PMC5667755  10.1371/journal.pone.0187466</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  2   29084241    MED 29084241 PMC5662171  10.1371/journal.pone.0186985</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;  3   29038446    MED 29038446 PMC5643306    10.1038/s41598-017-13605-8</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;  4 PMC5631614    PMC     &lt;NA&gt; PMC5631614                          &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;  5   29207725    MED 29207725 PMC5713747 10.7860/jcdr/2017/28114.10532</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  6   29057217    MED 29057217 PMC5635059      10.3389/fcimb.2017.00436</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  7   29148389    MED 29148389 PMC5708259        10.3201/eid2312.171107</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  8   29051603    MED 29051603 PMC5648924    10.1038/s41598-017-13234-1</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  9 PMC5632230    PMC     &lt;NA&gt; PMC5632230                          &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; 10 PMC5631130    PMC     &lt;NA&gt; PMC5631130                          &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 22 more variables: title &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, issue &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; #   journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt; #   pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;</span></a></code></pre>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;    id     source pmid  pmcid doi   title  authorString  journalTitle issue</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;  1 29304… MED    2930… PMC5… 10.1… Evalu… Mpoza E, Muk… PLoS One     1    </span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  2 29495… MED    2949… PMC5… 10.3… Menin… McCarthy PC,… Vaccines (B… 1    </span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;  3 29253… MED    2925… PMC5… 10.1… Early… Kambiré D, S… J Infect     3    </span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;  4 29580… MED    2958… PMC5… 10.1… Forei… Nasher F, Fö… BMC Microbi… 1    </span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;  5 29509… MED    2950… PMC5… 10.3… Genet… Ousmane S, D… Antibiotics… 1    </span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  6 29454… MED    2945… PMC5… 10.1… Cereb… Takahashi K,… J Neuroinfl… 1    </span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  7 29547… MED    2954… PMC5… 10.1… Bioin… Andreae CA, … PLoS One     3    </span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  8 29594… MED    2959… PMC5… 10.3… Loop-… Seki M, Kilg… Front Pedia… &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  9 29364… MED    2936… PMC5… 10.1… The c… Yaesoubi R, … PLoS Med     1    </span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; 10 29593… MED    2959… PMC5… 10.1… Preva… Lee H, Seo Y… Sci Rep      1    </span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 18 more variables: journalVolume &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt; #   hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;</span></a></code></pre>
 <p>To see, which other terms were text-mined on the article level, use the <code>europepmc::epmc_tm()</code> function.</p>
 </div>
 <div id="data-integrations" class="section level4">
@@ -595,26 +594,25 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Another nice feature of Europe PMC is to search for cross-references between Europe PMC to other databases. For instance, to get publications cited by entries in the <a href="https://www.ebi.ac.uk/pdbe/node/1">Protein Data bank in Europe</a> published 2016:</p>
 <pre class="sourceCode r" id="cb10"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'(HAS_PDB:y) AND FIRST_PDATE:2016'</span>)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; # A tibble: 100 x 27</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;          id source     pmid                           doi</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;                         &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;  1 28089452    MED 28089452     10.1016/j.str.2016.12.006</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  2 28089448    MED 28089448     10.1016/j.str.2016.12.005</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  3 28065506    MED 28065506     10.1016/j.str.2016.12.001</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  4 28039433    MED 28039433       10.1073/pnas.1611577114</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  5 28036383    MED 28036383  10.1371/journal.pone.0168832</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  6 28039325    MED 28039325           10.1093/nar/gkw1310</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  7 28035004    MED 28035004       10.1074/jbc.m116.749713</span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  8 28034958    MED 28034958           10.1093/nar/gkw1307</span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  9 28034013    MED 28034013 10.1080/07391102.2016.1278038</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; 10 28031486    MED 28031486       10.1073/pnas.1616198114</span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 23 more variables: title &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; #   authorString &lt;chr&gt;, journalTitle &lt;chr&gt;, issue &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; #   journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt; #   pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;    id     source pmid  pmcid doi   title  authorString  journalTitle issue</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;  1 28089… MED    2808… PMC5… 10.1… Struc… Sluchanko NN… Structure    2    </span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  2 28035… MED    2803… PMC5… 10.1… Struc… Waz S, Nakam… J Biol Chem  7    </span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  3 28030… MED    2803… PMC5… 10.1… Struc… Christensen … PLoS One     12   </span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  4 28028… MED    2802… PMC5… 10.1… Struc… Dow GT, Gilb… Protein Sci  3    </span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  5 28024… MED    2802… PMC5… 10.1… Cryst… Kuk AC, Mash… Nat Struct … 2    </span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  6 28011… MED    2801… PMC5… 10.1… Struc… Levdikov VM,… J Biol Chem  7    </span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  7 28009… MED    2800… PMC5… 10.1… Struc… Zhao H, Wei … Sci Rep      &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  8 28005… MED    2800… &lt;NA&gt;  10.1… Cycli… Coxon CR, An… J Med Chem   5    </span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  9 28004… MED    2800… &lt;NA&gt;  10.1… Disco… Cheeseman MD… J Med Chem   1    </span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; 10 28065… MED    2806… &lt;NA&gt;  10.1… Kobuv… Klima M, Cha… Structure    2    </span></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 18 more variables: journalVolume &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt; #   hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;</span></a></code></pre>
 <p>The following sources are supported</p>
 <ul>
 <li><strong>CHEBI</strong> a database and ontology of chemical entities of biological interest <a href="http://www.ebi.ac.uk/chebi/" class="uri">http://www.ebi.ac.uk/chebi/</a></li>
@@ -633,43 +631,40 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h4>Citations and reference sections</h4>
 <p>Europe PMC let us also obtain citation metadata and reference sections. For retrieving citation metadata per article, use</p>
 <pre class="sourceCode r" id="cb11"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_citations</span>(<span class="st">&quot;9338777&quot;</span>, <span class="dt">limit =</span> <span class="dv">500</span>)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; # A tibble: 211 x 12</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt;          id source</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;  1 10221475    MED</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;  2 10342317    MED</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;  3 10440384    MED</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;  4  9696842    MED</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;  5  9703304    MED</span></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt;  6  9728974    MED</span></a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt;  7  9728985    MED</span></a>
-<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt;  8  9728986    MED</span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt;  9  9728987    MED</span></a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; 10  9756815    MED</span></a>
-<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt; # ... with 201 more rows, and 10 more variables: citationType &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="co">#&gt; #   title &lt;chr&gt;, authorString &lt;chr&gt;, journalAbbreviation &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co">#&gt; #   pubYear &lt;int&gt;, volume &lt;chr&gt;, issue &lt;chr&gt;, pageInfo &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co">#&gt; #   citedByCount &lt;int&gt;, text &lt;chr&gt;</span></a></code></pre>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; # A tibble: 216 x 11</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt;    id     source citationType  title authorString journalAbbrevia… pubYear</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;  1 28437… MED    &quot;research su… Thre… Colon-Moran… Virology            2017</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;  2 28054… MED    journal arti… Anti… Inoue Y, Yo… Ann Biomed Eng      2017</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;  3 27832… MED    &quot;research-ar… Tran… Kim N, Choi… PLoS One            2016</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;  4 27649… MED    &quot;research-ar… Comp… Nascimento … PLoS One            2016</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;  5 27527… MED    &quot;review-arti… How … Denner J.    Viruses             2016</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt;  6 27466… MED    &quot;research su… Exis… Kuse K, Ito… J Virol             2016</span></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt;  7 26991… MED    journal arti… Micr… Plotzki E, … Xenotransplanta…    2016</span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt;  8 26067… MED    &quot;brief-repor… Comp… Tang HB, Ou… Genome Announc      2015</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt;  9 26043… MED    &quot;research su… Tole… Denner J, P… Virus Res           2015</span></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; 10 25956… MED    &quot;research su… Viru… Plotzki E, … Virus Res           2015</span></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt; # ... with 206 more rows, and 4 more variables: volume &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="co">#&gt; #   pageInfo &lt;chr&gt;, citedByCount &lt;int&gt;, issue &lt;chr&gt;</span></a></code></pre>
 <p>For reference section from an article:</p>
 <pre class="sourceCode r" id="cb12"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_refs</span>(<span class="st">&quot;28632490&quot;</span>, <span class="dt">limit =</span> <span class="dv">200</span>)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; # A tibble: 169 x 19</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;          id source    citationType</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;       &lt;chr&gt;  &lt;chr&gt;           &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;  1 12002480    MED JOURNAL ARTICLE</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;  2 18795164    MED JOURNAL ARTICLE</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;  3 18556606    MED JOURNAL ARTICLE</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  4 17683018    MED JOURNAL ARTICLE</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  5 15273108    MED JOURNAL ARTICLE</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  6 18207219    MED JOURNAL ARTICLE</span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  7 17007908    MED JOURNAL ARTICLE</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  8 26948762    MED JOURNAL ARTICLE</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  9 23192912    MED JOURNAL ARTICLE</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 10 25837385    MED JOURNAL ARTICLE</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; # ... with 159 more rows, and 16 more variables: title &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; #   authorString &lt;chr&gt;, journalAbbreviation &lt;chr&gt;, issue &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; #   pubYear &lt;int&gt;, volume &lt;chr&gt;, pageInfo &lt;chr&gt;, citedOrder &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#&gt; #   match &lt;chr&gt;, essn &lt;chr&gt;, issn &lt;chr&gt;, publicationTitle &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; #   publisherLoc &lt;chr&gt;, publisherName &lt;chr&gt;, externalLink &lt;chr&gt;, doi &lt;chr&gt;</span></a></code></pre>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;    id     source citationType title   authorString  journalAbbrevia… issue</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;  1 12002… MED    JOURNAL ART… Triclo… Adolfsson-Er… Chemosphere      9-10 </span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;  2 18795… MED    JOURNAL ART… In vit… Ahn KC, Zhao… Environ. Health… 9    </span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;  3 18556… MED    JOURNAL ART… Effect… Aiello AE, C… Am J Public Hea… 8    </span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  4 17683… MED    JOURNAL ART… Consum… Aiello AE, L… Clin. Infect. D… &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  5 15273… MED    JOURNAL ART… Relati… Aiello AE, M… Antimicrob. Age… 8    </span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  6 18207… MED    JOURNAL ART… The in… Allmyr M, Ha… Sci. Total Envi… 1    </span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  7 17007… MED    JOURNAL ART… Triclo… Allmyr M, Ad… Sci. Total Envi… 1    </span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  8 26948… MED    JOURNAL ART… Pressu… Alvarez-Rive… J Chromatogr A   &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  9 23192… MED    JOURNAL ART… Exposu… Anderson SE,… Toxicol. Sci.    1    </span></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 10 25837… MED    JOURNAL ART… Observ… Vladar EK, L… Methods Cell Bi… &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; # ... with 159 more rows, and 12 more variables: pubYear &lt;int&gt;,</span></a>
+<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; #   volume &lt;chr&gt;, pageInfo &lt;chr&gt;, citedOrder &lt;int&gt;, match &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; #   essn &lt;chr&gt;, issn &lt;chr&gt;, publicationTitle &lt;chr&gt;, publisherLoc &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#&gt; #   publisherName &lt;chr&gt;, externalLink &lt;chr&gt;, doi &lt;chr&gt;</span></a></code></pre>
 </div>
 <div id="fulltext-access" class="section level4">
 <h4>Fulltext access</h4>
