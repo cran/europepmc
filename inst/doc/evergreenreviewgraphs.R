@@ -1,4 +1,4 @@
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE--------------------------------------------------------------
 knitr::opts_chunk$set(
   comment = "#>",
   collapse = TRUE,
@@ -17,11 +17,11 @@ knitr::knit_hooks$set(inline = function(x) {
        }
    })
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(europepmc)
 europepmc::epmc_hits_trend(query = "aspirin", period = 2010:2016)
 
-## ---- fig.align='center'-------------------------------------------------
+## ---- fig.align='center'------------------------------------------------------
 tt_oa <- europepmc::epmc_hits_trend("OPEN_ACCESS:Y", period = 1995:2016, synonym = FALSE)
 tt_oa
 # we use ggplot2 for plotting the graph
@@ -32,13 +32,13 @@ ggplot(tt_oa, aes(year, query_hits / all_hits)) +
   xlab("Year published") + 
   ylab("Proportion of OA full-texts in Europe PMC")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 dvcs <- c("code.google.com", "github.com", 
           "sourceforge.net", "bitbucket.org", "cran.r-project.org")
 # make queries including reference section
 dvcs_query <- paste0('REF:"', dvcs, '"')
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(dplyr)
 my_df <- purrr::map_df(dvcs_query, function(x) {
   # get number of publications with indexed reference lists
@@ -59,7 +59,7 @@ hits_summary <- my_df %>%
   arrange(desc(all))
 hits_summary
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(ggplot2)
 ggplot(my_df, aes(factor(year), query_hits / refs_hits, group = query_id, 
                   color = query_id)) +

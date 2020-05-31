@@ -4,8 +4,14 @@
 \alias{epmc_search}
 \title{Search Europe PMC publication database}
 \usage{
-epmc_search(query = NULL, output = "parsed", synonym = TRUE,
-  verbose = TRUE, limit = 100, sort = NULL)
+epmc_search(
+  query = NULL,
+  output = "parsed",
+  synonym = TRUE,
+  verbose = TRUE,
+  limit = 100,
+  sort = NULL
+)
 }
 \arguments{
 \item{query}{character, search query. For more information on how to build a
@@ -18,8 +24,9 @@ returned as data.frame. 'id_list' returns a list of IDs and sources. Use
 become very large.}
 
 \item{synonym}{logical, synonym search. If TRUE, synonym terms from MeSH
-terminology and the UniProt synonym list are queried, too. Disabled by
-default.}
+terminology and the UniProt synonym list are queried, too.
+In order to replicate results from the website, with the Rest API
+you need to turn synonyms ON!}
 
 \item{verbose}{logical, print progress bar. Activated by default.}
 

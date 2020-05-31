@@ -1,39 +1,59 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Najko Jahn" />
 
-<meta name="date" content="2018-04-20" />
+<meta name="date" content="2020-05-31" />
 
 <title>Introducing europepmc, an R interface to Europe PMC RESTful API</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-a.sourceLine { display: inline-block; min-height: 1.25em; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; }
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -41,39 +61,63 @@ pre.numberSource a.sourceLine::before
     color: #aaaaaa;
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; color: initial; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code span.dt { color: #902000; } /* DataType */
 code span.dv { color: #40a070; } /* DecVal */
-code span.bn { color: #40a070; } /* BaseN */
-code span.fl { color: #40a070; } /* Float */
-code span.ch { color: #4070a0; } /* Char */
-code span.st { color: #4070a0; } /* String */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.ot { color: #007020; } /* Other */
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.fu { color: #06287e; } /* Function */
 code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code span.cn { color: #880000; } /* Constant */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.im { } /* Import */
-code span.va { color: #19177c; } /* Variable */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.op { color: #666666; } /* Operator */
-code span.bu { } /* BuiltIn */
 code span.ex { } /* Extension */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.at { color: #7d9029; } /* Attribute */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -87,9 +131,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -258,8 +299,12 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
+
+
 
 </head>
 
@@ -269,350 +314,310 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Introducing europepmc, an R interface to Europe PMC RESTful API</h1>
-<h4 class="author"><em>Najko Jahn</em></h4>
-<h4 class="date"><em>2018-04-20</em></h4>
+<h4 class="author">Najko Jahn</h4>
+<h4 class="date">2020-05-31</h4>
 
 
 
 <div id="what-is-searched" class="section level2">
 <h2>What is searched?</h2>
-<p><a href="http://europepmc.org/">Europe PMC</a> is a repository of life science literature. Europe PMC ingests all PubMed content and extends its index with other sources, including Agricola, a bibliographic database of citations to the agricultural literature, or Biological Patents.</p>
-<div class="figure">
-<img src="data:image/png;charset=UTF-8;base64,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" alt="Index coverage" />
-<p class="caption">Index coverage</p>
-</div>
+<p><a href="http://europepmc.org/">Europe PMC</a> is a repository of life science literature. Europe PMC ingests all PubMed content and extends its index with other literature and patent sources.</p>
 <p>For more background on Europe PMC, see:</p>
 <p><a href="https://europepmc.org/About" class="uri">https://europepmc.org/About</a></p>
 <p>Levchenko, M., Gou, Y., Graef, F., Hamelers, A., Huang, Z., Ide-Smith, M., … McEntyre, J. (2017). Europe PMC in 2017. Nucleic Acids Research, 46(D1), D1254–D1260. <a href="https://doi.org/10.1093/nar/gkx1005" class="uri">https://doi.org/10.1093/nar/gkx1005</a></p>
 </div>
 <div id="how-to-search-europe-pmc-with-r" class="section level2">
 <h2>How to search Europe PMC with R?</h2>
-<p>This client supports the <a href="http://europepmc.org/Help#SSR">Europe PMC search syntax</a>. If you are unfamiliar with searching Europe PMC, check out the <a href="https://europepmc.org/advancesearch">Europe PMC query builder</a>, a very nice tool that helps you to create your queries. To make use of your Europe PMC queries in R, simply copy &amp; paste the search string to the search functions of this package.</p>
-<p>In the following, some examples how to search Europe PMC are presented.</p>
+<p>This client supports the <a href="http://europepmc.org/Help#SSR">Europe PMC search syntax</a>. If you are unfamiliar with searching Europe PMC, check out the <a href="https://europepmc.org/advancesearch">Europe PMC query builder</a>, a very nice tool that helps you to build queries. To make use of Europe PMC queries in R, copy &amp; paste the search string to the search functions of this package.</p>
+<p>In the following, some examples demonstrate how to search Europe PMC with R.</p>
 <div id="free-search" class="section level3">
 <h3>Free search</h3>
 <p><code>empc_search()</code> is the main function to query Europe PMC. It searches both metadata and fulltexts.</p>
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(europepmc)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'malaria'</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; # A tibble: 100 x 27</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt;    id     source pmid   doi    title     authorString   journalTitle issue</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt;  1 29322… MED    29322… 10.10… Anion in… Vullo D, Syrj… J Enzyme In… 1    </span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt;  2 29497… MED    29497… 10.71… Motivati… Winn LK, Less… J Glob Heal… 1    </span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt;  3 29412… MED    29412… 10.10… Advances… Ragavan KV, K… Biosens Bio… &lt;NA&gt; </span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;  4 29661… MED    29661… 10.11… Socioeco… Were V, Buff … Malar J      1    </span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;  5 29671… MED    29671… 10.33… Mapping … Ferrao JL, Ni… Int J Envir… 4    </span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;  6 29619… MED    29619… 10.71… Quantify… Krezanoski PJ… J Glob Heal… 1    </span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;  7 29636… MED    29636… 10.11… &quot;Scaling… Faye S, Cico … Malar J      1    </span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt;  8 29649… MED    29649… 10.15… Updated … Ballard SB, S… MMWR Morb M… 14   </span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;  9 29661… MED    29661… 10.11… Factors … Awuah RB, Asa… Malar J      1    </span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; 10 29652… MED    29652… 10.13… Cost of … Dalaba MA, We… PLoS One     4    </span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; # ... with 90 more rows, and 19 more variables: journalVolume &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; #   hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
-<p>Please note that Europe PMC expands queries with MeSH synonyms by default, a behaviour which can be turned off with the <code>synonym</code> parameter.</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'malaria'</span>, <span class="dt">synonym =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; # A tibble: 100 x 27</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;    id     source pmid   doi    title     authorString   journalTitle issue</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;  1 29322… MED    29322… 10.10… Anion in… Vullo D, Syrj… J Enzyme In… 1    </span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;  2 29497… MED    29497… 10.71… Motivati… Winn LK, Less… J Glob Heal… 1    </span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;  3 29412… MED    29412… 10.10… Advances… Ragavan KV, K… Biosens Bio… &lt;NA&gt; </span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;  4 29661… MED    29661… 10.11… Socioeco… Were V, Buff … Malar J      1    </span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;  5 29671… MED    29671… 10.33… Mapping … Ferrao JL, Ni… Int J Envir… 4    </span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;  6 29661… MED    29661… 10.11… Factors … Awuah RB, Asa… Malar J      1    </span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;  7 29614… MED    29614… 10.13… Transfus… Iheonu FO, Fa… PLoS One     4    </span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;  8 29625… MED    29625… 10.11… A 17-yea… Tesfa H, Bayi… Malar J      1    </span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;  9 29652… MED    29652… 10.13… Cost of … Dalaba MA, We… PLoS One     4    </span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 10 29615… MED    29615… 10.11… A review… Muchena G, Du… Malar J      1    </span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 19 more variables: journalVolume &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; #   hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(europepmc)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">&#39;malaria&#39;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt; # A tibble: 100 x 29</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt;    id    source pmid  pmcid doi   title authorString journalTitle issue</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt;  1 3204… MED    3204… PMC7… 10.1… Bala… Drewry LL, … Virulence    1    </span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt;  2 3206… MED    3206… PMC7… 10.1… Pred… Patel H, Du… Virulence    1    </span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt;  3 3204… MED    3204… &lt;NA&gt;  10.1… Mode… Olaniyi S, … J Biol Dyn   1    </span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt;  4 3246… MED    3246… &lt;NA&gt;  10.1… Back… Xing Y, Guo… J Biol Dyn   1    </span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt;  5 3190… MED    3190… PMC6… 10.1… Sett… Bucşan AN, … Virulence    1    </span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co">#&gt;  6 3236… MED    3236… PMC7… 10.1… Mate… Charlier C,… Virulence    1    </span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#&gt;  7 3185… MED    3185… PMC6… 10.1… Inhi… Alissa SA, … J Enzyme In… 1    </span></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="co">#&gt;  8 3207… MED    3207… &lt;NA&gt;  10.2… 2-Am… Serban G.    Acta Pharm   3    </span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="co">#&gt;  9 3220… MED    3220… PMC7… 10.1… Esta… Acharya KP,… Emerg Micro… 1    </span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="co">#&gt; 10 3186… MED    3186… PMC6… 10.1… Iden… Zhou Y, Wen… Pharm Biol   1    </span></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="co">#&gt; # … with 90 more rows, and 20 more variables: journalVolume &lt;chr&gt;,</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;,</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="co">#&gt; #   hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstIndexDate &lt;chr&gt;,</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, versionNumber &lt;int&gt;</span></span></code></pre></div>
+<p>It is worth noting that Europe PMC expands queries with MeSH synonyms by default, a behavior which can be turned off with the <code>synonym</code> parameter.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">&#39;malaria&#39;</span>, <span class="dt">synonym =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; # A tibble: 100 x 29</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt;    id    source pmid  pmcid doi   title authorString journalTitle issue</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;  1 3204… MED    3204… PMC7… 10.1… &quot;Bal… Drewry LL, … Virulence    1    </span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt;  2 3204… MED    3204… &lt;NA&gt;  10.1… &quot;Mod… Olaniyi S, … J Biol Dyn   1    </span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;  3 3246… MED    3246… &lt;NA&gt;  10.1… &quot;Bac… Xing Y, Guo… J Biol Dyn   1    </span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt;  4 3206… MED    3206… PMC7… 10.1… &quot;Pre… Patel H, Du… Virulence    1    </span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt;  5 3190… MED    3190… PMC6… 10.1… &quot;Set… Bucşan AN, … Virulence    1    </span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt;  6 PPR1… PPR    &lt;NA&gt;  &lt;NA&gt;  10.2… &quot;Urb… Hassen J, D… &lt;NA&gt;         &lt;NA&gt; </span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt;  7 PPR1… PPR    &lt;NA&gt;  &lt;NA&gt;  10.2… &quot;Mal… Dufera M, K… &lt;NA&gt;         &lt;NA&gt; </span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt;  8 PPR1… PPR    &lt;NA&gt;  &lt;NA&gt;  10.2… &quot;Mal… Mundagowa P… &lt;NA&gt;         &lt;NA&gt; </span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt;  9 3247… MED    3247… &lt;NA&gt;  10.1… &quot;Cos… Sarker AR, … PLoS One     5    </span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt; 10 PPR1… PPR    &lt;NA&gt;  &lt;NA&gt;  10.2… &quot;Pat… Monroe A, M… &lt;NA&gt;         &lt;NA&gt; </span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; # … with 90 more rows, and 20 more variables: journalVolume &lt;chr&gt;,</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;,</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt; #   hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstIndexDate &lt;chr&gt;,</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, versionNumber &lt;int&gt;</span></span></code></pre></div>
 <p>To get an exact match, use quotes as in the following example:</p>
-<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'&quot;Human malaria parasites&quot;'</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 100 x 27</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;    id     source pmid   doi    title    authorString    journalTitle issue</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;           &lt;chr&gt;        &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;  1 29109… MED    29109… 10.11… Validat… Uddin T, McFad… Antimicrob … 1    </span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  2 28902… MED    28902… 10.11… A genet… Sayers CP, Mol… Cell Microb… 1    </span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;  3 27894… MED    27894… 10.10… Plasmod… Maeno Y, Culle… Parasitology 4    </span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;  4 28900… MED    28900… 10.11… Can Mix… Singh US, Siwa… Biomed Res … &lt;NA&gt; </span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;  5 29669… MED    29669… 10.11… The bio… Awono-Ambene P… Parasit Vec… 1    </span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt;  6 29370… MED    29370… 10.13… A novel… Komaki-Yasuda … PLoS One     1    </span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;  7 27748… MED    27748… 10.10… Non-hum… Martinelli A, … Parasitology 1    </span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;  8 PMC55… PMC    &lt;NA&gt;   &lt;NA&gt;   Can Mix… Singh US, Siwa… Biomed Res … &lt;NA&gt; </span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  9 28525… MED    28525… 10.10… The use… Othman AS, Mar… Expert Rev … 7    </span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 10 28531… MED    28531… 10.13… Experim… Singh N, Barne… PLoS One     5    </span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 19 more variables: journalVolume &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; #   inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; #   citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt; #   pageInfo &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">&#39;&quot;Human malaria parasites&quot;&#39;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; # A tibble: 100 x 28</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt;    id    source pmid  doi   title authorString journalTitle pubYear journalIssn</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;      </span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt;  1 3247… MED    3247… 10.1… &quot;C-t… Kimata-Arig… J Biochem    2020    &quot;0021-924x…</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt;  2 PPR1… PPR    &lt;NA&gt;  10.1… &quot;A d… Cobb DW, Ku… &lt;NA&gt;         2020     &lt;NA&gt;      </span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt;  3 3192… MED    3192… 10.1… &quot;Fal… Rosenthal P… Biochim Bio… 2020    &quot;1570-9639…</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt;  4 PPR9… PPR    &lt;NA&gt;  10.1… &quot;Mal… Kwon H, Rey… &lt;NA&gt;         2019     &lt;NA&gt;      </span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="co">#&gt;  5 PPR9… PPR    &lt;NA&gt;  10.1… &quot;Dis… Subudhi AK,… &lt;NA&gt;         2019     &lt;NA&gt;      </span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="co">#&gt;  6 PPR1… PPR    &lt;NA&gt;  10.2… &quot;A r… Jivapetthai… &lt;NA&gt;         2019     &lt;NA&gt;      </span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="co">#&gt;  7 PPR6… PPR    &lt;NA&gt;  10.1… &quot;Gen… McLean KJ, … &lt;NA&gt;         2018     &lt;NA&gt;      </span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="co">#&gt;  8 PPR8… PPR    &lt;NA&gt;  10.1… &quot;Qua… Hopp CS, Ka… &lt;NA&gt;         2019     &lt;NA&gt;      </span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="co">#&gt;  9 PPR5… PPR    &lt;NA&gt;  10.1… &quot;A m… Tang Y, Mei… &lt;NA&gt;         2018     &lt;NA&gt;      </span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="co">#&gt; 10 3149… MED    3149… 10.1… &quot;Par… Greischar M… Evolution    2019    &quot;0014-3820…</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="co">#&gt; # … with 90 more rows, and 19 more variables: pubType &lt;chr&gt;,</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;,</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="co">#&gt; #   hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstIndexDate &lt;chr&gt;,</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, issue &lt;chr&gt;, journalVolume &lt;chr&gt;,</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a><span class="co">#&gt; #   pageInfo &lt;chr&gt;, pmcid &lt;chr&gt;</span></span></code></pre></div>
 </div>
 <div id="managing-search-results" class="section level3">
 <h3>Managing search results</h3>
 <p>By default, 100 records are returned, but the number of results can be expanded or limited with the <code>limit</code> parameter.</p>
-<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'&quot;Human malaria parasites&quot;'</span>, <span class="dt">limit =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 27</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;    id     source pmid   doi    title    authorString    journalTitle issue</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;           &lt;chr&gt;        &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;  1 29109… MED    29109… 10.11… Validat… Uddin T, McFad… Antimicrob … 1    </span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;  2 28902… MED    28902… 10.11… A genet… Sayers CP, Mol… Cell Microb… 1    </span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  3 27894… MED    27894… 10.10… Plasmod… Maeno Y, Culle… Parasitology 4    </span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  4 28900… MED    28900… 10.11… Can Mix… Singh US, Siwa… Biomed Res … &lt;NA&gt; </span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  5 29669… MED    29669… 10.11… The bio… Awono-Ambene P… Parasit Vec… 1    </span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  6 29370… MED    29370… 10.13… A novel… Komaki-Yasuda … PLoS One     1    </span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;  7 27748… MED    27748… 10.10… Non-hum… Martinelli A, … Parasitology 1    </span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;  8 PMC55… PMC    &lt;NA&gt;   &lt;NA&gt;   Can Mix… Singh US, Siwa… Biomed Res … &lt;NA&gt; </span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;  9 28525… MED    28525… 10.10… The use… Othman AS, Mar… Expert Rev … 7    </span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; 10 28531… MED    28531… 10.13… Experim… Singh N, Barne… PLoS One     5    </span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; # ... with 19 more variables: journalVolume &lt;chr&gt;, pubYear &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; #   journalIssn &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; #   inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; #   pageInfo &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">&#39;&quot;Human malaria parasites&quot;&#39;</span>, <span class="dt">limit =</span> <span class="dv">10</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; # A tibble: 10 x 27</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt;    id    source pmid  doi   title authorString journalTitle pubYear journalIssn</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;      </span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt;  1 3247… MED    3247… 10.1… &quot;C-t… Kimata-Arig… J Biochem    2020    &quot;0021-924x…</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt;  2 PPR1… PPR    &lt;NA&gt;  10.1… &quot;A d… Cobb DW, Ku… &lt;NA&gt;         2020     &lt;NA&gt;      </span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt;  3 3192… MED    3192… 10.1… &quot;Fal… Rosenthal P… Biochim Bio… 2020    &quot;1570-9639…</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt;  4 PPR9… PPR    &lt;NA&gt;  10.1… &quot;Mal… Kwon H, Rey… &lt;NA&gt;         2019     &lt;NA&gt;      </span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt;  5 PPR9… PPR    &lt;NA&gt;  10.1… &quot;Dis… Subudhi AK,… &lt;NA&gt;         2019     &lt;NA&gt;      </span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt;  6 PPR1… PPR    &lt;NA&gt;  10.2… &quot;A r… Jivapetthai… &lt;NA&gt;         2019     &lt;NA&gt;      </span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt;  7 PPR6… PPR    &lt;NA&gt;  10.1… &quot;Gen… McLean KJ, … &lt;NA&gt;         2018     &lt;NA&gt;      </span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt;  8 PPR8… PPR    &lt;NA&gt;  10.1… &quot;Qua… Hopp CS, Ka… &lt;NA&gt;         2019     &lt;NA&gt;      </span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt;  9 PPR5… PPR    &lt;NA&gt;  10.1… &quot;A m… Tang Y, Mei… &lt;NA&gt;         2018     &lt;NA&gt;      </span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt; 10 3149… MED    3149… 10.1… &quot;Par… Greischar M… Evolution    2019    &quot;0014-3820…</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; # … with 18 more variables: pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;,</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt; #   inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;,</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt; #   citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstIndexDate &lt;chr&gt;,</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, issue &lt;chr&gt;, journalVolume &lt;chr&gt;,</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; #   pageInfo &lt;chr&gt;</span></span></code></pre></div>
 <p>Results are sorted by relevance. Other options via the <code>sort</code> parameter are</p>
 <ul>
-<li><code>sort = 'cited'</code> by the number of citation, descending from the most cited publication</li>
-<li><code>sort = 'date'</code> by date published starting with the most recent publication</li>
+<li><code>sort = &#39;cited&#39;</code> by the number of citation, descending from the most cited publication</li>
+<li><code>sort = &#39;date&#39;</code> by date published starting with the most recent publication</li>
 </ul>
 </div>
-<div id="loop-over-queries" class="section level3">
-<h3>Loop over queries</h3>
-<p>Sometimes, you would like to send more than one search to Europe PMC at once. A simple solution is using <code>plyr::ldply()</code>:</p>
-<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">my_dois &lt;-<span class="st"> </span><span class="kw">c</span>(</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="st">&quot;10.1159/000479962&quot;</span>,</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="st">&quot;10.1002/sctm.17-0081&quot;</span>,</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="st">&quot;10.1161/strokeaha.117.018077&quot;</span>,</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="st">&quot;10.1007/s12017-017-8447-9&quot;</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">  )</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">  plyr<span class="op">::</span><span class="kw">ldply</span>(my_dois, <span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">  europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="kw">paste0</span>(<span class="st">&quot;DOI:&quot;</span>, x))</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">  })</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;         id source     pmid                          doi</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; 1 28957815    MED 28957815            10.1159/000479962</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; 2 28941317    MED 28941317         10.1002/sctm.17-0081</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; 3 29018132    MED 29018132 10.1161/strokeaha.117.018077</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; 4 28623611    MED 28623611    10.1007/s12017-017-8447-9</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;                                                                                                                                 title</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; 1 Clinical Relevance of Patent Foramen Ovale and Atrial Septum Aneurysm in Stroke: Findings of a Single-Center Cross-Sectional Study.</span></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt; 2                                 Concise Review: Extracellular Vesicles Overcoming Limitations of Cell Therapies in Ischemic Stroke.</span></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt; 3                                                 One-Stop Management of Acute Stroke Patients: Minimizing Door-to-Reperfusion Times.</span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt; 4              Deferiprone Rescues Behavioral Deficits Induced by Mild Iron Exposure in a Mouse Model of Alpha-Synuclein Aggregation.</span></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt;                                                                                                    authorString</span></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt; 1                                 Schnieder M, Siddiqui T, Karch A, Bähr M, Hasenfuss G, Liman J, Schroeter MR.</span></a>
-<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt; 2                                                                    Doeppner TR, Bähr M, Hermann DM, Giebel B.</span></a>
-<a class="sourceLine" id="cb5-23" data-line-number="23"><span class="co">#&gt; 3 Psychogios MN, Behme D, Schregel K, Tsogkas I, Maier IL, Leyhe JR, Zapf A, Tran J, Bähr M, Liman J, Knauth M.</span></a>
-<a class="sourceLine" id="cb5-24" data-line-number="24"><span class="co">#&gt; 4                                     Carboni E, Tatenhorst L, Tönges L, Barski E, Dambeck V, Bähr M, Lingor P.</span></a>
-<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co">#&gt;            journalTitle issue journalVolume pubYear            journalIssn</span></a>
-<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="co">#&gt; 1            Eur Neurol   5-6            78    2017 0014-3022; 1421-9913; </span></a>
-<a class="sourceLine" id="cb5-27" data-line-number="27"><span class="co">#&gt; 2 Stem Cells Transl Med    11             6    2017 2157-6564; 2157-6580; </span></a>
-<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co">#&gt; 3                Stroke    11            48    2017 0039-2499; 1524-4628; </span></a>
-<a class="sourceLine" id="cb5-29" data-line-number="29"><span class="co">#&gt; 4    Neuromolecular Med   2-3            19    2017 1535-1084; 1559-1174; </span></a>
-<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="co">#&gt;    pageInfo</span></a>
-<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="co">#&gt; 1   264-269</span></a>
-<a class="sourceLine" id="cb5-32" data-line-number="32"><span class="co">#&gt; 2 2044-2052</span></a>
-<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="co">#&gt; 3 3152-3155</span></a>
-<a class="sourceLine" id="cb5-34" data-line-number="34"><span class="co">#&gt; 4   309-321</span></a>
-<a class="sourceLine" id="cb5-35" data-line-number="35"><span class="co">#&gt;                                                               pubType</span></a>
-<a class="sourceLine" id="cb5-36" data-line-number="36"><span class="co">#&gt; 1                                                     journal article</span></a>
-<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="co">#&gt; 2                                           review; journal article; </span></a>
-<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="co">#&gt; 3 clinical trial; research support, non-u.s. gov't; journal article; </span></a>
-<a class="sourceLine" id="cb5-39" data-line-number="39"><span class="co">#&gt; 4                                 research-article; journal article; </span></a>
-<a class="sourceLine" id="cb5-40" data-line-number="40"><span class="co">#&gt;   isOpenAccess inEPMC inPMC hasPDF hasBook citedByCount hasReferences</span></a>
-<a class="sourceLine" id="cb5-41" data-line-number="41"><span class="co">#&gt; 1            N      N     N      N       N            0             Y</span></a>
-<a class="sourceLine" id="cb5-42" data-line-number="42"><span class="co">#&gt; 2            N      N     N      N       N            0             Y</span></a>
-<a class="sourceLine" id="cb5-43" data-line-number="43"><span class="co">#&gt; 3            N      N     N      N       N            1             N</span></a>
-<a class="sourceLine" id="cb5-44" data-line-number="44"><span class="co">#&gt; 4            Y      Y     N      Y       N            1             Y</span></a>
-<a class="sourceLine" id="cb5-45" data-line-number="45"><span class="co">#&gt;   hasTextMinedTerms hasDbCrossReferences hasLabsLinks</span></a>
-<a class="sourceLine" id="cb5-46" data-line-number="46"><span class="co">#&gt; 1                 N                    N            Y</span></a>
-<a class="sourceLine" id="cb5-47" data-line-number="47"><span class="co">#&gt; 2                 N                    N            Y</span></a>
-<a class="sourceLine" id="cb5-48" data-line-number="48"><span class="co">#&gt; 3                 N                    N            Y</span></a>
-<a class="sourceLine" id="cb5-49" data-line-number="49"><span class="co">#&gt; 4                 Y                    N            Y</span></a>
-<a class="sourceLine" id="cb5-50" data-line-number="50"><span class="co">#&gt;   hasTMAccessionNumbers firstPublicationDate      pmcid hasSuppl</span></a>
-<a class="sourceLine" id="cb5-51" data-line-number="51"><span class="co">#&gt; 1                     N           2017-09-28       &lt;NA&gt;     &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb5-52" data-line-number="52"><span class="co">#&gt; 2                     N           2017-09-23       &lt;NA&gt;     &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb5-53" data-line-number="53"><span class="co">#&gt; 3                     N           2017-10-10       &lt;NA&gt;     &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb5-54" data-line-number="54"><span class="co">#&gt; 4                     Y           2017-06-16 PMC5570801        Y</span></a></code></pre>
+<div id="search-by-dois" class="section level3">
+<h3>Search by DOIs</h3>
+<p>Sometimes, you would like to check, if articles are indexed in Europe PMC using DOI names, a widely used identifier for scholarly articles. Use <code>epmc_search_by_doi()</code> for this purpose.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>my_dois &lt;-<span class="st"> </span><span class="kw">c</span>(</span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="st">&quot;10.1159/000479962&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="st">&quot;10.1002/sctm.17-0081&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="st">&quot;10.1161/strokeaha.117.018077&quot;</span>,</span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="st">&quot;10.1007/s12017-017-8447-9&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>  )</span>
+<span id="cb5-7"><a href="#cb5-7"></a>europepmc<span class="op">::</span><span class="kw">epmc_search_by_doi</span>(<span class="dt">doi =</span> my_dois)</span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt; # A tibble: 4 x 28</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt;   id    source pmid  doi   title authorString journalTitle issue journalVolume</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;        </span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt; 1 2895… MED    2895… 10.1… Clin… Schnieder M… Eur Neurol   5-6   78           </span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt; 2 2894… MED    2894… 10.1… Conc… Doeppner TR… Stem Cells … 11    6            </span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt; 3 2901… MED    2901… 10.1… One-… Psychogios … Stroke       11    48           </span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; 4 2862… MED    2862… 10.1… Defe… Carboni E, … Neuromolecu… 2-3   19           </span></span>
+<span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt; # … with 19 more variables: pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;,</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt; #   pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt; #   hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></span>
+<span id="cb5-19"><a href="#cb5-19"></a><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstIndexDate &lt;chr&gt;,</span></span>
+<span id="cb5-20"><a href="#cb5-20"></a><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;</span></span></code></pre></div>
 </div>
 <div id="output-options" class="section level3">
 <h3>Output options</h3>
-<p>By default, a non-nested data frame printed as tibble is returned. Other formats are <code>output = &quot;id_list&quot;</code>&quot; returning a list of IDs and sources, and output = “‘raw’”&quot; to get full metadata as list. Please be aware that these lists can become very large.</p>
+<p>By default, a non-nested data frame printed as tibble is returned. Other formats are <code>output = &quot;id_list&quot;</code> returning a list of IDs and sources, and output = “‘raw’”&quot; for getting full metadata as list. Please be aware that these lists can become very large.</p>
 </div>
 <div id="more-advanced-options-to-search-europe-pmc" class="section level3">
 <h3>More advanced options to search Europe PMC</h3>
 <div id="author-search" class="section level4">
 <h4>Author search</h4>
 <p>Use the Europe PMC query syntax to search by author names:</p>
-<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'AUTH:&quot;Salmon Maelle&quot;'</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 7 x 27</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;   id     source pmid   doi   title authorString journalTitle journalVolume</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;        </span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1 29626… MED    29626… 10.1… Deve… Sanchez M, … Sci Total E… 634          </span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; 2 29330… MED    29330… 10.1… Heal… Mueller N, … Prev Med     109          </span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; 3 29088… MED    29088… 10.1… Time… Schumacher … PLoS One     12           </span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; 4 28708… MED    28708… 10.3… Pred… Sanchez M, … Int J Envir… 14           </span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; 5 28606… MED    28606… 10.1… Inte… Tonne C, Sa… Int J Hyg E… 220          </span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; 6 27063… MED    27063… 10.2… A sy… Salmon M, S… Euro Survei… 21           </span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 7 26250… MED    26250… 10.1… Baye… Salmon M, S… Biom J       57           </span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; # ... with 19 more variables: pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; #   pageInfo &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; #   inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; #   issue &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
-<p><a href="https://europepmc.org/advancesearch">Europe PMC Advanced Search</a> has a auto-suggest field for author names if you feel unsure how the name you are searching for is indexed in Europe PMC. Using the Boolean <code>OR</code> operator you can simply search for more than one spelling variant:</p>
-<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">q &lt;-<span class="st"> 'AUTH:&quot;PÜHLER Alfred&quot; OR AUTH:&quot;Pühler Alfred Prof. Dr.&quot; OR AUTH:&quot;Puhler A&quot;'</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(q, <span class="dt">limit =</span> <span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; # A tibble: 558 x 27</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;    id     source pmid   doi   title   authorString    journalTitle pubYear</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;           &lt;chr&gt;        &lt;chr&gt;  </span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;  1 29463… MED    29463… 10.1… Comple… Wibberg D, Sal… Antimicrob … 2018   </span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;  2 29278… MED    29278… 10.1… Assemb… Verwaaijen B, … J Biotechnol 2018   </span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  3 29205… MED    29205… 10.1… Target… Stolze Y, Brem… Microb Biot… 2017   </span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  4 29158… MED    29158… 10.1… Genomi… Maus I, Bremge… Biotechnol … 2017   </span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  5 29092… MED    29092… 10.1… A gene… Mayer G, Quast… Brief Bioin… 2017   </span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  6 28919… MED    28919… 10.1… Genome… Lasek R, Dziew… J Biotechnol 2017   </span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  7 28917… MED    28917… 10.1… The co… Ortseifen V, K… J Biotechnol 2017   </span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  8 28856… MED    28856… 10.1… Lifest… Czarnecki J, D… Environ Mic… 2017   </span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  9 28743… MED    28743… 10.1… The Ma… Wolf T, Droste… BMC Genomics 2017   </span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; 10 28713… MED    28713… 10.1… A comm… Vizcaíno JA, W… F1000Res     2017   </span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; # ... with 548 more rows, and 19 more variables: journalIssn &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; #   pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; #   hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, journalVolume &lt;chr&gt;, pageInfo &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; #   pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;, issue &lt;chr&gt;</span></a></code></pre>
-<p>There is a considerable overlap between common names. The integration of ORCID, a persistent author identifier, allows unambiguous search for personal publications in Europe PMC. For example, to search for publications written by Bernd Weisshaar (ORCID: <a href="https://orcid.org/0000-0002-7635-3473" class="uri">https://orcid.org/0000-0002-7635-3473</a>) sorted by the number of times cited in descending order:</p>
-<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'AUTHORID:&quot;0000-0002-7635-3473&quot;'</span>, <span class="dt">limit =</span> <span class="dv">200</span>, <span class="dt">sort =</span> <span class="st">&quot;cited&quot;</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; # A tibble: 133 x 27</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;    id     source pmid  doi   title  authorString        journalTitle issue</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;               &lt;chr&gt;        &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;  1 21873… MED    2187… 10.1… The g… Wang X, Wang H, Wa… Nat Genet    10   </span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;  2 11597… MED    1159… 10.1… The R… Stracke R, Werber … Curr Opin P… 5    </span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;  3 20674… MED    2067… 10.1… MYB t… Dubos C, Stracke R… Trends Plan… 10   </span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;  4 11906… MED    1190… 10.1… bZIP … Jakoby M, Weisshaa… Trends Plan… 3    </span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  5 14756… MED    1475… 10.1… An Ar… Rosso MG, Li Y, St… Plant Mol B… 1-2  </span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  6 11080… MED    1108… 10.1… Trans… Jin H, Cominelli E… EMBO J       22   </span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;  7 12679… MED    1267… 10.1… The b… Heim MA, Jakoby M,… Mol Biol Ev… 5    </span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  8 15361… MED    1536… 10.1… Compr… Zimmermann IM, Hei… Plant J      1    </span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  9 15255… MED    1525… 10.1… TT2, … Baudry A, Heim MA,… Plant J      3    </span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; 10 17419… MED    1741… 10.1… Diffe… Stracke R, Ishihar… Plant J      4    </span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; # ... with 123 more rows, and 19 more variables: journalVolume &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; #   hasBook &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; #   hasLabsLinks &lt;chr&gt;, hasTMAccessionNumbers &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;, hasSuppl &lt;chr&gt;</span></a></code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">&#39;AUTH:&quot;Salmon Maelle&quot;&#39;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; # A tibble: 10 x 28</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt;    id    source pmid  doi   title authorString journalTitle issue journalVolume</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;        </span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;  1 3037… MED    3037… 10.1… When… Milà C, Sal… Environ Sci… 22    52           </span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt;  2 2977… MED    2977… 10.1… Wear… Salmon M, M… Environ Int  &lt;NA&gt;  117          </span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt;  3 2975… MED    2975… 10.1… Use … Kumar MK, S… Environ Pol… &lt;NA&gt;  239          </span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt;  4 2962… MED    2962… 10.1… Deve… Sanchez M, … Sci Total E… &lt;NA&gt;  634          </span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt;  5 2933… MED    2933… 10.1… Heal… Mueller N, … Prev Med     &lt;NA&gt;  109          </span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;  6 2908… MED    2908… 10.1… Time… Schumacher … PLoS One     10    12           </span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt;  7 2860… MED    2860… 10.1… Inte… Tonne C, Sa… Int J Hyg E… 6     220          </span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt;  8 2870… MED    2870… 10.3… Pred… Sanchez M, … Int J Envir… 7     14           </span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt;  9 2706… MED    2706… 10.2… A sy… Salmon M, S… Euro Survei… 13    21           </span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; 10 2625… MED    2625… 10.1… Baye… Salmon M, S… Biom J       6     57           </span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; # … with 19 more variables: pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;,</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt; #   pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="co">#&gt; #   hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstIndexDate &lt;chr&gt;,</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;</span></span></code></pre></div>
+<p><a href="https://europepmc.org/advancesearch">Europe PMC Advanced Search</a> has a auto-suggest field for author names if you feel unsure how the name you are searching for is indexed in Europe PMC. Using the Boolean <code>OR</code> operator allows searching for more than one spelling variant:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>q &lt;-<span class="st"> &#39;AUTH:&quot;PÜHLER Alfred&quot; OR AUTH:&quot;Pühler Alfred Prof. Dr.&quot; OR AUTH:&quot;Puhler A&quot;&#39;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>europepmc<span class="op">::</span><span class="kw">epmc_search</span>(q, <span class="dt">limit =</span> <span class="dv">1000</span>)</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt; # A tibble: 575 x 28</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt;    id    source pmid  doi   title authorString journalTitle pubYear journalIssn</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;      </span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt;  1 3234… MED    3234… 10.1… Abse… Schaffert L… Appl Microb… 2020    &quot;0175-7598…</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt;  2 3186… MED    3186… 10.3… Geno… Hassa J, Wi… Microorgani… 2019    &quot;2076-2607&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt;  3 3173… MED    3173… 10.3… Esse… Schaffert L… Front Micro… 2019    &quot;1664-302x&quot;</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="co">#&gt;  4 3140… MED    3140… 10.3… Gene… Nelkner J, … Genes (Base… 2019    &quot;2073-4425&quot;</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="co">#&gt;  5 2909… MED    2909… 10.1… A ge… Mayer G, Qu… Brief Bioin… 2019    &quot;1467-5463…</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#&gt;  6 3125… MED    3125… 10.1… Eval… Schaffert L… Microb Cell… 2019    &quot;1475-2859&quot;</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="co">#&gt;  7 3135… MED    3135… 10.1… de.N… Belmann P, … F1000Res     2019    &quot;2046-1402&quot;</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="co">#&gt;  8 PPR8… PPR    &lt;NA&gt;  10.1… de.N… Belmann P, … &lt;NA&gt;         2019     &lt;NA&gt;      </span></span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="co">#&gt;  9 3116… MED    3116… 10.3… Effe… Nelkner J, … Genes (Base… 2019    &quot;2073-4425&quot;</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="co">#&gt; 10 3107… MED    3107… 10.1… A co… Verwaaijen … Sci Rep      2019    &quot;2045-2322&quot;</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="co">#&gt; # … with 565 more rows, and 19 more variables: pubType &lt;chr&gt;,</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;,</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a><span class="co">#&gt; #   hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstIndexDate &lt;chr&gt;,</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;, issue &lt;chr&gt;, journalVolume &lt;chr&gt;,</span></span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="co">#&gt; #   pageInfo &lt;chr&gt;</span></span></code></pre></div>
+<p>There is a considerable overlap between common names. The integration of ORCID, a persistent author identifier, allows unambiguous search for personal publications in Europe PMC. For example, here’s how to search for publications written by Bernd Weisshaar (ORCID: <a href="https://orcid.org/0000-0002-7635-3473" class="uri">https://orcid.org/0000-0002-7635-3473</a>) sorted by the number of times cited in descending order:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">&#39;AUTHORID:&quot;0000-0002-7635-3473&quot;&#39;</span>, <span class="dt">limit =</span> <span class="dv">200</span>, <span class="dt">sort =</span> <span class="st">&quot;cited&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt; # A tibble: 143 x 28</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt;    id    source pmid  doi   title authorString journalTitle issue journalVolume</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;        </span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt;  1 2187… MED    2187… 10.1… The … Wang X, Wan… Nat Genet    10    43           </span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt;  2 1159… MED    1159… 10.1… The … Stracke R, … Curr Opin P… 5     4            </span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt;  3 2067… MED    2067… 10.1… MYB … Dubos C, St… Trends Plan… 10    15           </span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;  4 1190… MED    1190… 10.1… bZIP… Jakoby M, W… Trends Plan… 3     7            </span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;  5 1475… MED    1475… 10.1… An A… Rosso MG, L… Plant Mol B… 1-2   53           </span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;  6 1267… MED    1267… 10.1… The … Heim MA, Ja… Mol Biol Ev… 5     20           </span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  7 1108… MED    1108… 10.1… Tran… Jin H, Comi… EMBO J       22    19           </span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  8 1536… MED    1536… 10.1… Comp… Zimmermann … Plant J      1     40           </span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  9 1525… MED    1525… 10.1… TT2,… Baudry A, H… Plant J      3     39           </span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt; 10 1741… MED    1741… 10.1… Diff… Stracke R, … Plant J      4     50           </span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt; # … with 133 more rows, and 19 more variables: pubYear &lt;chr&gt;,</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt; #   journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;, isOpenAccess &lt;chr&gt;,</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="co">#&gt; #   inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;,</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a><span class="co">#&gt; #   citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></span>
+<span id="cb8-20"><a href="#cb8-20"></a><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstIndexDate &lt;chr&gt;,</span></span>
+<span id="cb8-21"><a href="#cb8-21"></a><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, pmcid &lt;chr&gt;</span></span></code></pre></div>
 </div>
-<div id="text-mined-terms" class="section level4">
-<h4>Text-mined terms</h4>
-<p>Europe PMC parses article metadata for various concepts and terms.</p>
-<table>
-<colgroup>
-<col width="13%"></col>
-<col width="86%"></col>
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Semantic types</th>
-<th align="left">Description/Examples</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">accession</td>
-<td align="left">A unique identifier given to a DNA or protein sequence record</td>
-</tr>
-<tr class="even">
-<td align="left">chemical</td>
-<td align="left">e.g. Granzymes, Peptides, Hydrogen</td>
-</tr>
-<tr class="odd">
-<td align="left">disease</td>
-<td align="left">e.g. dysthymias, gid, icterohemorrhagic</td>
-</tr>
-<tr class="even">
-<td align="left">efo</td>
-<td align="left">Experimental Factor Ontology e.g. generation, health, mortality rate, scale, findings, genome etc.</td>
-</tr>
-<tr class="odd">
-<td align="left">gene_protein</td>
-<td align="left">e.g. atp, cl-43, ecoriir, gng11, ipt1, mlks</td>
-</tr>
-<tr class="even">
-<td align="left">go_term</td>
-<td align="left">A Gene Ontology (GO) term e.g. annealing, neuroblasts</td>
-</tr>
-<tr class="odd">
-<td align="left">organism</td>
-<td align="left">e.g. pneumocystidomycetes, sarus, terebratulide</td>
-</tr>
-</tbody>
-</table>
-<p>Here’s how to search for publications about meningitis:</p>
-<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'disease:meningitis'</span>)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; # A tibble: 100 x 27</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;    id     source pmid  pmcid doi   title  authorString  journalTitle issue</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;  1 29304… MED    2930… PMC5… 10.1… Evalu… Mpoza E, Muk… PLoS One     1    </span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  2 29495… MED    2949… PMC5… 10.3… Menin… McCarthy PC,… Vaccines (B… 1    </span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;  3 29253… MED    2925… PMC5… 10.1… Early… Kambiré D, S… J Infect     3    </span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;  4 29580… MED    2958… PMC5… 10.1… Forei… Nasher F, Fö… BMC Microbi… 1    </span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;  5 29509… MED    2950… PMC5… 10.3… Genet… Ousmane S, D… Antibiotics… 1    </span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  6 29454… MED    2945… PMC5… 10.1… Cereb… Takahashi K,… J Neuroinfl… 1    </span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  7 29547… MED    2954… PMC5… 10.1… Bioin… Andreae CA, … PLoS One     3    </span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  8 29594… MED    2959… PMC5… 10.3… Loop-… Seki M, Kilg… Front Pedia… &lt;NA&gt; </span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  9 29364… MED    2936… PMC5… 10.1… The c… Yaesoubi R, … PLoS Med     1    </span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; 10 29593… MED    2959… PMC5… 10.1… Preva… Lee H, Seo Y… Sci Rep      1    </span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 18 more variables: journalVolume &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt; #   hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;</span></a></code></pre>
-<p>To see, which other terms were text-mined on the article level, use the <code>europepmc::epmc_tm()</code> function.</p>
+<div id="annotations" class="section level4">
+<h4>Annotations</h4>
+<p>Europe PMC provides text-mined annotations contained in abstracts and open access full-text articles.</p>
+<p>These automatically identified concepts and term can be retrieved at the article-level:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>europepmc<span class="op">::</span><span class="kw">epmc_annotations_by_id</span>(<span class="kw">c</span>(<span class="st">&quot;MED:28585529&quot;</span>, <span class="st">&quot;PMC:PMC1664601&quot;</span>))</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">#&gt; # A tibble: 774 x 13</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co">#&gt;    source ext_id pmcid prefix exact postfix name  uri   id    type  section</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  </span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#&gt;  1 MED    28585… PMC5… &quot;tive… Beta… &quot; allo… Beta… http… http… Orga… Title …</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt;  2 MED    28585… PMC5… &quot;at, … suga… &quot; (Bet… suga… http… http… Orga… Abstra…</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt;  3 MED    28585… PMC5… &quot;d a … beet  &quot;. &quot;    beet  http… http… Orga… Abstra…</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt;  4 MED    28585… PMC5… &quot;lati… beets &quot; (B. … beets http… http… Orga… Abstra…</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt;  5 MED    28585… PMC5… &quot;of &lt;… B. v… &quot; ssp.… B. v… http… http… Orga… Abstra…</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;  6 MED    28585… PMC5… &quot; bee… ssp   &quot;. mar… ssp   http… http… Gene… Abstra…</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt;  7 MED    28585… PMC5… &quot;ify … Beta… &quot; ssp.… Beta… http… http… Orga… Abstra…</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt;  8 MED    28585… PMC5… &quot;beet… ssp   &quot;. vul… ssp   http… http… Gene… Abstra…</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt;  9 MED    28585… PMC5… &quot;ed v… MBS   &quot;). &quot;   MBS   http… http… Gene… Abstra…</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt; 10 MED    28585… PMC5… &quot;2 wa… MBS   &quot; and … MBS   http… http… Gene… Abstra…</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt; # … with 764 more rows, and 2 more variables: provider &lt;chr&gt;, subType &lt;chr&gt;</span></span></code></pre></div>
+<p>To obtain a list of articles where Europe PMC has text-minded annotations, either subset the resulting data.frame</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>tt &lt;-<span class="st"> </span><span class="kw">epmc_search</span>(<span class="st">&quot;malaria&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a>tt[tt<span class="op">$</span>hasTextMinedTerms <span class="op">==</span><span class="st"> &quot;Y&quot;</span> <span class="op">|</span><span class="st"> </span>tt<span class="op">$</span>hasTMAccessionNumbers <span class="op">==</span><span class="st"> &quot;Y&quot;</span>,]</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">#&gt; # A tibble: 97 x 29</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">#&gt;    id    source pmid  pmcid doi   title authorString journalTitle issue</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt;  1 3204… MED    3204… PMC7… 10.1… Bala… Drewry LL, … Virulence    1    </span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt;  2 3206… MED    3206… PMC7… 10.1… Pred… Patel H, Du… Virulence    1    </span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt;  3 3204… MED    3204… &lt;NA&gt;  10.1… Mode… Olaniyi S, … J Biol Dyn   1    </span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt;  4 3246… MED    3246… &lt;NA&gt;  10.1… Back… Xing Y, Guo… J Biol Dyn   1    </span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt;  5 3190… MED    3190… PMC6… 10.1… Sett… Bucşan AN, … Virulence    1    </span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt;  6 3236… MED    3236… PMC7… 10.1… Mate… Charlier C,… Virulence    1    </span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt;  7 3185… MED    3185… PMC6… 10.1… Inhi… Alissa SA, … J Enzyme In… 1    </span></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="co">#&gt;  8 3207… MED    3207… &lt;NA&gt;  10.2… 2-Am… Serban G.    Acta Pharm   3    </span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co">#&gt;  9 3220… MED    3220… PMC7… 10.1… Esta… Acharya KP,… Emerg Micro… 1    </span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="co">#&gt; 10 3186… MED    3186… PMC6… 10.1… Iden… Zhou Y, Wen… Pharm Biol   1    </span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="co">#&gt; # … with 87 more rows, and 20 more variables: journalVolume &lt;chr&gt;,</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;,</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a><span class="co">#&gt; #   hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></span>
+<span id="cb10-20"><a href="#cb10-20"></a><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></span>
+<span id="cb10-21"><a href="#cb10-21"></a><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstIndexDate &lt;chr&gt;,</span></span>
+<span id="cb10-22"><a href="#cb10-22"></a><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;, versionNumber &lt;int&gt;</span></span></code></pre></div>
+<p>or expand the query choosing an annotation type or provider from the <a href="https://europepmc.org/advancesearch">Europe PMC Advanced Search</a> query builder.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">epmc_search</span>(<span class="st">&#39;malaria AND (ANNOTATION_TYPE:&quot;Cell&quot;) AND (ANNOTATION_PROVIDER:&quot;Europe PMC&quot;)&#39;</span>)</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="co">#&gt; # A tibble: 100 x 28</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="co">#&gt;    id    source pmid  pmcid doi   title authorString journalTitle issue</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="co">#&gt;  1 3130… MED    3130… PMC7… 10.1… Blac… Opoka RO, W… Clin Infect… 11   </span></span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="co">#&gt;  2 3169… MED    3169… PMC7… 10.1… Redu… Kingston HW… J Infect Dis 9    </span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="co">#&gt;  3 3150… MED    3150… &lt;NA&gt;  10.1… Acut… Oshomah-Bel… J Trop Pedi… 2    </span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="co">#&gt;  4 3182… MED    3182… &lt;NA&gt;  10.1… CD8+… Riggle BA, … J Clin Inve… 3    </span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="co">#&gt;  5 3167… MED    3167… &lt;NA&gt;  10.1… A Sy… Thiengsusuk… Eur J Drug … 2    </span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="co">#&gt;  6 3104… MED    3104… &lt;NA&gt;  10.1… Elev… Datta D, Co… Clin Infect… 6    </span></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="co">#&gt;  7 3168… MED    3168… &lt;NA&gt;  10.1… Eval… Ferdinand D… Trans R Soc… 3    </span></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="co">#&gt;  8 3085… MED    3085… &lt;NA&gt;  10.1… An E… Woodford J,… J Infect Dis 6    </span></span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="co">#&gt;  9 3153… MED    3153… &lt;NA&gt;  10.1… Asso… Peitzmeier … AIDS Behav   3    </span></span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="co">#&gt; 10 3184… MED    3184… PMC6… 10.1… Arte… Pull L, Lup… Malar J      1    </span></span>
+<span id="cb11-15"><a href="#cb11-15"></a><span class="co">#&gt; # … with 90 more rows, and 19 more variables: journalVolume &lt;chr&gt;,</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;,</span></span>
+<span id="cb11-18"><a href="#cb11-18"></a><span class="co">#&gt; #   hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></span>
+<span id="cb11-19"><a href="#cb11-19"></a><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></span>
+<span id="cb11-20"><a href="#cb11-20"></a><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstIndexDate &lt;chr&gt;,</span></span>
+<span id="cb11-21"><a href="#cb11-21"></a><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;</span></span></code></pre></div>
 </div>
 <div id="data-integrations" class="section level4">
 <h4>Data integrations</h4>
 <p>Another nice feature of Europe PMC is to search for cross-references between Europe PMC to other databases. For instance, to get publications cited by entries in the <a href="https://www.ebi.ac.uk/pdbe/node/1">Protein Data bank in Europe</a> published 2016:</p>
-<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">'(HAS_PDB:y) AND FIRST_PDATE:2016'</span>)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; # A tibble: 100 x 27</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;    id     source pmid  pmcid doi   title  authorString  journalTitle issue</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;  1 28089… MED    2808… PMC5… 10.1… Struc… Sluchanko NN… Structure    2    </span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  2 28035… MED    2803… PMC5… 10.1… Struc… Waz S, Nakam… J Biol Chem  7    </span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  3 28030… MED    2803… PMC5… 10.1… Struc… Christensen … PLoS One     12   </span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  4 28028… MED    2802… PMC5… 10.1… Struc… Dow GT, Gilb… Protein Sci  3    </span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  5 28024… MED    2802… PMC5… 10.1… Cryst… Kuk AC, Mash… Nat Struct … 2    </span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  6 28011… MED    2801… PMC5… 10.1… Struc… Levdikov VM,… J Biol Chem  7    </span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  7 28009… MED    2800… PMC5… 10.1… Struc… Zhao H, Wei … Sci Rep      &lt;NA&gt; </span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  8 28005… MED    2800… &lt;NA&gt;  10.1… Cycli… Coxon CR, An… J Med Chem   5    </span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  9 28004… MED    2800… &lt;NA&gt;  10.1… Disco… Cheeseman MD… J Med Chem   1    </span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; 10 28065… MED    2806… &lt;NA&gt;  10.1… Kobuv… Klima M, Cha… Structure    2    </span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; # ... with 90 more rows, and 18 more variables: journalVolume &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt; #   hasBook &lt;chr&gt;, hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt; #   hasReferences &lt;chr&gt;, hasTextMinedTerms &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt; #   hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstPublicationDate &lt;chr&gt;</span></a></code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>europepmc<span class="op">::</span><span class="kw">epmc_search</span>(<span class="st">&#39;(HAS_PDB:y) AND FIRST_PDATE:2016&#39;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="co">#&gt; # A tibble: 100 x 28</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co">#&gt;    id    source pmid  pmcid doi   title authorString journalTitle issue</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="co">#&gt;  1 2803… MED    2803… PMC5… 10.1… Stru… Su HP, Rick… Proc Natl A… 3    </span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="co">#&gt;  2 2803… MED    2803… PMC5… 10.1… Stru… Kovaľ T, Øs… PLoS One     12   </span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="co">#&gt;  3 2797… MED    2797… &lt;NA&gt;  10.1… Comp… De Deurwaer… ACS Chem Ne… 5    </span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="co">#&gt;  4 2814… MED    2814… PMC5… 10.3… Bioc… Ulrich V, B… Beilstein J… &lt;NA&gt; </span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="co">#&gt;  5 2802… MED    2802… &lt;NA&gt;  10.1… Stru… Zhou Z, Liu… Appl Microb… 7    </span></span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="co">#&gt;  6 2795… MED    2795… &lt;NA&gt;  10.1… Glyc… Hamark C, B… J Am Chem S… 1    </span></span>
+<span id="cb12-11"><a href="#cb12-11"></a><span class="co">#&gt;  7 2795… MED    2795… PMC6… 10.1… Stru… Reed AJ, Vy… J Am Chem S… 1    </span></span>
+<span id="cb12-12"><a href="#cb12-12"></a><span class="co">#&gt;  8 2803… MED    2803… PMC5… 10.1… Stru… Sevrioukova… Proc Natl A… 3    </span></span>
+<span id="cb12-13"><a href="#cb12-13"></a><span class="co">#&gt;  9 2808… MED    2808… PMC5… 10.3… Conf… Paoletti F,… Front Mol B… &lt;NA&gt; </span></span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="co">#&gt; 10 2802… MED    2802… &lt;NA&gt;  10.1… Solu… Bibow S, Po… Nat Struct … 2    </span></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="co">#&gt; # … with 90 more rows, and 19 more variables: journalVolume &lt;chr&gt;,</span></span>
+<span id="cb12-16"><a href="#cb12-16"></a><span class="co">#&gt; #   pubYear &lt;chr&gt;, journalIssn &lt;chr&gt;, pageInfo &lt;chr&gt;, pubType &lt;chr&gt;,</span></span>
+<span id="cb12-17"><a href="#cb12-17"></a><span class="co">#&gt; #   isOpenAccess &lt;chr&gt;, inEPMC &lt;chr&gt;, inPMC &lt;chr&gt;, hasPDF &lt;chr&gt;, hasBook &lt;chr&gt;,</span></span>
+<span id="cb12-18"><a href="#cb12-18"></a><span class="co">#&gt; #   hasSuppl &lt;chr&gt;, citedByCount &lt;int&gt;, hasReferences &lt;chr&gt;,</span></span>
+<span id="cb12-19"><a href="#cb12-19"></a><span class="co">#&gt; #   hasTextMinedTerms &lt;chr&gt;, hasDbCrossReferences &lt;chr&gt;, hasLabsLinks &lt;chr&gt;,</span></span>
+<span id="cb12-20"><a href="#cb12-20"></a><span class="co">#&gt; #   hasTMAccessionNumbers &lt;chr&gt;, firstIndexDate &lt;chr&gt;,</span></span>
+<span id="cb12-21"><a href="#cb12-21"></a><span class="co">#&gt; #   firstPublicationDate &lt;chr&gt;</span></span></code></pre></div>
 <p>The following sources are supported</p>
 <ul>
 <li><strong>CHEBI</strong> a database and ontology of chemical entities of biological interest <a href="http://www.ebi.ac.uk/chebi/" class="uri">http://www.ebi.ac.uk/chebi/</a></li>
@@ -630,56 +635,59 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="citations-and-reference-sections" class="section level4">
 <h4>Citations and reference sections</h4>
 <p>Europe PMC let us also obtain citation metadata and reference sections. For retrieving citation metadata per article, use</p>
-<pre class="sourceCode r" id="cb11"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_citations</span>(<span class="st">&quot;9338777&quot;</span>, <span class="dt">limit =</span> <span class="dv">500</span>)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; # A tibble: 216 x 11</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt;    id     source citationType  title authorString journalAbbrevia… pubYear</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;  1 28437… MED    &quot;research su… Thre… Colon-Moran… Virology            2017</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;  2 28054… MED    journal arti… Anti… Inoue Y, Yo… Ann Biomed Eng      2017</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;  3 27832… MED    &quot;research-ar… Tran… Kim N, Choi… PLoS One            2016</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;  4 27649… MED    &quot;research-ar… Comp… Nascimento … PLoS One            2016</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;  5 27527… MED    &quot;review-arti… How … Denner J.    Viruses             2016</span></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt;  6 27466… MED    &quot;research su… Exis… Kuse K, Ito… J Virol             2016</span></a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt;  7 26991… MED    journal arti… Micr… Plotzki E, … Xenotransplanta…    2016</span></a>
-<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt;  8 26067… MED    &quot;brief-repor… Comp… Tang HB, Ou… Genome Announc      2015</span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt;  9 26043… MED    &quot;research su… Tole… Denner J, P… Virus Res           2015</span></a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; 10 25956… MED    &quot;research su… Viru… Plotzki E, … Virus Res           2015</span></a>
-<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt; # ... with 206 more rows, and 4 more variables: volume &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="co">#&gt; #   pageInfo &lt;chr&gt;, citedByCount &lt;int&gt;, issue &lt;chr&gt;</span></a></code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>europepmc<span class="op">::</span><span class="kw">epmc_citations</span>(<span class="st">&quot;9338777&quot;</span>, <span class="dt">limit =</span> <span class="dv">500</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="co">#&gt; # A tibble: 232 x 11</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="co">#&gt;    id    source citationType title authorString journalAbbrevia… pubYear volume</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              &lt;int&gt; &lt;chr&gt; </span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="co">#&gt;  1 3156… MED    research-ar… Regu… Chung HC, N… J Vet Sci           2019 20    </span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="co">#&gt;  2 3023… MED    research su… Bioe… Legallais C… Adv Healthc Mat…    2018 7     </span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="co">#&gt;  3 3026… MED    research su… Porc… Fiebig U, F… Xenotransplanta…    2018 25    </span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="co">#&gt;  4 2975… MED    historical … Infe… Weiss RA.    Xenotransplanta…    2018 25    </span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="co">#&gt;  5 2964… MED    research su… Trac… Kawasaki J,… Viruses             2018 10    </span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="co">#&gt;  6 2876… MED    research su… Pres… Kawasaki J,… J Virol             2017 91    </span></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="co">#&gt;  7 2843… MED    research su… Thre… Colon-Moran… Virology            2017 507   </span></span>
+<span id="cb13-12"><a href="#cb13-12"></a><span class="co">#&gt;  8 2805… MED    research su… Anti… Inoue Y, Yo… Ann Biomed Eng      2017 45    </span></span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt;  9 2783… MED    research-ar… Tran… Kim N, Choi… PLoS One            2016 11    </span></span>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="co">#&gt; 10 2746… MED    research su… Exis… Kuse K, Ito… J Virol             2016 90    </span></span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="co">#&gt; # … with 222 more rows, and 3 more variables: issue &lt;chr&gt;, pageInfo &lt;chr&gt;,</span></span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt; #   citedByCount &lt;int&gt;</span></span></code></pre></div>
 <p>For reference section from an article:</p>
-<pre class="sourceCode r" id="cb12"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_refs</span>(<span class="st">&quot;28632490&quot;</span>, <span class="dt">limit =</span> <span class="dv">200</span>)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; # A tibble: 169 x 19</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;    id     source citationType title   authorString  journalAbbrevia… issue</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;  1 12002… MED    JOURNAL ART… Triclo… Adolfsson-Er… Chemosphere      9-10 </span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;  2 18795… MED    JOURNAL ART… In vit… Ahn KC, Zhao… Environ. Health… 9    </span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;  3 18556… MED    JOURNAL ART… Effect… Aiello AE, C… Am J Public Hea… 8    </span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  4 17683… MED    JOURNAL ART… Consum… Aiello AE, L… Clin. Infect. D… &lt;NA&gt; </span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  5 15273… MED    JOURNAL ART… Relati… Aiello AE, M… Antimicrob. Age… 8    </span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  6 18207… MED    JOURNAL ART… The in… Allmyr M, Ha… Sci. Total Envi… 1    </span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  7 17007… MED    JOURNAL ART… Triclo… Allmyr M, Ad… Sci. Total Envi… 1    </span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  8 26948… MED    JOURNAL ART… Pressu… Alvarez-Rive… J Chromatogr A   &lt;NA&gt; </span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  9 23192… MED    JOURNAL ART… Exposu… Anderson SE,… Toxicol. Sci.    1    </span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 10 25837… MED    JOURNAL ART… Observ… Vladar EK, L… Methods Cell Bi… &lt;NA&gt; </span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; # ... with 159 more rows, and 12 more variables: pubYear &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; #   volume &lt;chr&gt;, pageInfo &lt;chr&gt;, citedOrder &lt;int&gt;, match &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; #   essn &lt;chr&gt;, issn &lt;chr&gt;, publicationTitle &lt;chr&gt;, publisherLoc &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#&gt; #   publisherName &lt;chr&gt;, externalLink &lt;chr&gt;, doi &lt;chr&gt;</span></a></code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>europepmc<span class="op">::</span><span class="kw">epmc_refs</span>(<span class="st">&quot;28632490&quot;</span>, <span class="dt">limit =</span> <span class="dv">200</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="co">#&gt; # A tibble: 169 x 19</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="co">#&gt;    id    source citationType title authorString journalAbbrevia… issue pubYear</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;   &lt;int&gt;</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="co">#&gt;  1 1200… MED    JOURNAL ART… Tric… Adolfsson-E… Chemosphere      9-10     2002</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="co">#&gt;  2 1879… MED    JOURNAL ART… In v… Ahn KC, Zha… Environ. Health… 9        2008</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="co">#&gt;  3 1855… MED    JOURNAL ART… Effe… Aiello AE, … Am J Public Hea… 8        2008</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="co">#&gt;  4 1768… MED    JOURNAL ART… Cons… Aiello AE, … Clin. Infect. D… &lt;NA&gt;     2007</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="co">#&gt;  5 1527… MED    JOURNAL ART… Rela… Aiello AE, … Antimicrob. Age… 8        2004</span></span>
+<span id="cb14-10"><a href="#cb14-10"></a><span class="co">#&gt;  6 1820… MED    JOURNAL ART… The … Allmyr M, H… Sci. Total Envi… 1        2008</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co">#&gt;  7 1700… MED    JOURNAL ART… Tric… Allmyr M, A… Sci. Total Envi… 1        2006</span></span>
+<span id="cb14-12"><a href="#cb14-12"></a><span class="co">#&gt;  8 2694… MED    JOURNAL ART… Pres… Alvarez-Riv… J Chromatogr A   &lt;NA&gt;     2016</span></span>
+<span id="cb14-13"><a href="#cb14-13"></a><span class="co">#&gt;  9 2319… MED    JOURNAL ART… Expo… Anderson SE… Toxicol. Sci.    1        2012</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a><span class="co">#&gt; 10 2583… MED    JOURNAL ART… Obse… Vladar EK, … Methods Cell Bi… &lt;NA&gt;     2015</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a><span class="co">#&gt; # … with 159 more rows, and 11 more variables: volume &lt;chr&gt;, pageInfo &lt;chr&gt;,</span></span>
+<span id="cb14-16"><a href="#cb14-16"></a><span class="co">#&gt; #   citedOrder &lt;int&gt;, match &lt;chr&gt;, issn &lt;chr&gt;, essn &lt;chr&gt;,</span></span>
+<span id="cb14-17"><a href="#cb14-17"></a><span class="co">#&gt; #   publicationTitle &lt;chr&gt;, publisherLoc &lt;chr&gt;, publisherName &lt;chr&gt;,</span></span>
+<span id="cb14-18"><a href="#cb14-18"></a><span class="co">#&gt; #   externalLink &lt;chr&gt;, doi &lt;chr&gt;</span></span></code></pre></div>
 </div>
 <div id="fulltext-access" class="section level4">
 <h4>Fulltext access</h4>
 <p>Europe PMC gives not only access to metadata, but also to full-texts. Adding <code>AND (OPEN_ACCESS:y)</code> to your search query, returns only those articles where Europe PMC has also the fulltext.</p>
-<p>Fulltext as xml can accessed via the PubMed Central ID (PMCID):</p>
-<pre class="sourceCode r" id="cb13"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">europepmc<span class="op">::</span><span class="kw">epmc_ftxt</span>(<span class="st">&quot;PMC3257301&quot;</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; {xml_document}</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; &lt;article article-type=&quot;research-article&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:mml=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; [1] &lt;front&gt;\n  &lt;journal-meta&gt;\n    &lt;journal-id journal-id-type=&quot;nlm-ta&quot;&gt; ...</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; [2] &lt;body&gt;\n  &lt;sec id=&quot;s1&quot;&gt;\n    &lt;title&gt;Introduction&lt;/title&gt;\n    &lt;p&gt;Atm ...</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; [3] &lt;back&gt;\n  &lt;ack&gt;\n    &lt;p&gt;We would like to thank Dr. C. Gourlay and Dr ...</span></a></code></pre>
+<p>Fulltext as xml document can accessed via the PMID or the PubMed Central ID (PMCID):</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>europepmc<span class="op">::</span><span class="kw">epmc_ftxt</span>(<span class="st">&quot;PMC3257301&quot;</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt; {xml_document}</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co">#&gt; &lt;article article-type=&quot;research-article&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:mml=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co">#&gt; [1] &lt;front&gt;\n  &lt;journal-meta&gt;\n    &lt;journal-id journal-id-type=&quot;nlm-ta&quot;&gt;PLoS  ...</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#&gt; [2] &lt;body&gt;\n  &lt;sec id=&quot;s1&quot;&gt;\n    &lt;title&gt;Introduction&lt;/title&gt;\n    &lt;p&gt;Atmosphe ...</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="co">#&gt; [3] &lt;back&gt;\n  &lt;ack&gt;\n    &lt;p&gt;We would like to thank Dr. C. Gourlay and Dr. T.  ...</span></span></code></pre></div>
 </div>
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

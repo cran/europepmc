@@ -1,6 +1,6 @@
 #' Get details for individual records
 #'
-#' This function returns full metadata for a given publication ID
+#' This function returns parsed metadata for a given publication ID
 #' including abstract, full text links, author details including ORCID and affiliation,
 #' MeSH terms, chemicals, grants.
 #'
@@ -19,6 +19,7 @@
 #'     \item{med}{PubMed/Medline NLM}
 #'     \item{pat}{Biological Patents}
 #'     \item{pmc}{PubMed Central}
+#'     \item{ppr}{Preprint records}
 #'     }
 #'
 #' @return list of data frames
@@ -45,6 +46,8 @@
 #' epmc_details("338638", data_src = "hir")
 #' # Theses
 #' epmc_details("409323", data_src = "eth")
+#' # Preprint
+#' epmc_details("PPR158112", data_src = "ppr")
 #' }
 epmc_details <- function(ext_id = NULL, data_src = "med") {
   if (is.null(ext_id))
@@ -69,7 +72,7 @@ epmc_details <- function(ext_id = NULL, data_src = "med") {
     )
   } else {
     q <- list(
-      query = paste0("ext_id:", ext_id, "%20src:", data_src),
+      query = toupper(paste0("ext_id:", ext_id, "%20src:", data_src)),
       format = "json",
       resulttype = "core"
     )
@@ -92,7 +95,7 @@ epmc_details <- function(ext_id = NULL, data_src = "med") {
       comments = plyr::rbind.fill(res$commentCorrectionList$commentCorrection),
       grants =  plyr::rbind.fill(res$grantsList$grant)
     )
-    lapply(out, dplyr::as_data_frame)
+    lapply(out, tibble::as_tibble)
   }
 }
 

@@ -18,8 +18,9 @@
 #' @param limit integer, limit the number of records you wish to retrieve. By
 #'   default, 100 are returned.
 #' @param synonym logical, synonym search. If TRUE, synonym terms from MeSH
-#'   terminology and the UniProt synonym list are queried, too. Disabled by
-#'   default.
+#'   terminology and the UniProt synonym list are queried, too.
+#'   In order to replicate results from the website, with the Rest API
+#'   you need to turn synonyms ON!
 #' @param sort character, relevance ranking is used by default. Use
 #'   \code{sort = 'cited'} for sorting by the number of citations, or
 #'   \code{sort = 'date'} by the most recent publications.
@@ -85,7 +86,7 @@ epmc_search <- function(query = NULL,
 
   page_token <- "*"
   if (!output == "raw")
-    results <- dplyr::data_frame()
+    results <- tibble::tibble()
   else
     results <- NULL
   # search
@@ -179,7 +180,7 @@ epmc_search_ <-
     page_size <- ifelse(batch_size() <= limit, batch_size(), limit)
     # choose output
     if (!output %in% c("id_list", "parsed", "raw"))
-      stop("'output' must be one of 'parsed', 'id_list'. 'raw'",
+      stop("'output' must be one of 'parsed', 'id_list', or 'raw'",
            call. = FALSE)
     result_types <- c("id_list" = "idlist",
                       "parsed" = "lite",
@@ -202,11 +203,11 @@ epmc_search_ <-
     if (!resulttype == "core") {
       md <- out$resultList$result
       if (length(md) == 0) {
-        md <- dplyr::data_frame()
+        md <- tibble::tibble()
       } else {
         md <- md %>%
           dplyr::select_if(Negate(is.list)) %>%
-          dplyr::as_data_frame()
+          tibble::as_tibble()
       }
     } else {
       out <- jsonlite::fromJSON(out, simplifyDataFrame = FALSE)

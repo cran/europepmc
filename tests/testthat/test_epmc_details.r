@@ -12,6 +12,8 @@ test_that("epmc_details returns", {
   h <- epmc_details("409323", data_src = "eth")
   j <- epmc_details("20585653")
   k <- epmc_details(ext_id = "26980001")
+  l <- epmc_details("PPR158112", data_src = "ppr")
+  m <- epmc_details("30937518")
 
 
   #correct dimensions and class
@@ -25,6 +27,9 @@ test_that("epmc_details returns", {
   expect_output(str(h), "List of 9")
   expect_output(str(j), "List of 9")
   expect_output(str(k), "List of 9")
+  expect_output(str(l), "List of 9")
+  expect_output(str(m), "List of 9")
+
 
   #correct class metadata
   expect_is(a$basic, "data.frame")
@@ -40,16 +45,17 @@ test_that("epmc_details returns", {
   expect_is(a$mesh_topic, "data.frame")
   expect_is(a$mesh_qualifiers, "data.frame")
   expect_is(a$comments, "data.frame")
+  expect_is(m$author_details$authorAffiliationsList.authorAffiliation, "list")
 
-  # returns NULL if no mesh qualifiers were found
-  expect_equal(j$mesh_qualifiers, NULL)
+  # returns empty tibble if no mesh qualifiers were found
+  expect_equal(nrow(j$mesh_qualifiers), 0)
 
-  #are diminsions correct?
+  #are dimensions correct?
   expect_equal(nrow(a$basic), 1)
   expect_equal(ncol(a$mesh_topic), 2)
 
   # fails correctly
-  expect_message(epmc_details("123hah"), 
+  expect_message(epmc_details("123hah"),
     "nothing found, please check your query")
   expect_null(epmc_details("123hah"))
   expect_error(epmc_details("NBK338142", data_src = "nbks"))
