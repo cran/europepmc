@@ -1,6 +1,6 @@
-7c4cc94d58a28dae0e7549d384426f0a *DESCRIPTION
+a23742e52443f5c0030e686493ff40b8 *DESCRIPTION
 3e4c7952ef34f81ec568f36451ed5d6f *NAMESPACE
-1ac45f412dd7872ed9d3ad1db94ae3c6 *NEWS.md
+c78a0fe08749ebeafa01558543222810 *NEWS.md
 c2b28c81be841cc02d1ece0839468857 *R/annotations_by_id.R
 f04a2291ef02f65956c9a63a409d27fa *R/defunct.r
 80a08f4cf46aea9f5b0f710dc31cea71 *R/epmc_citations.r
@@ -19,13 +19,13 @@ d5ad5610d634728113d4f3117c64a4db *R/epmc_search.r
 462027d582b9f9d072c9d33fa09b7e89 *R/epmc_search_by_doi.r
 2beb5b15d56dad0d12435de573949e0a *R/europepmc.r
 3dcd6cded3e611f2cae66aedb092881b *R/utils.r
-20ad9a960336506ab6c4ee3457e9425d *README.md
+3156da23e7c514016dee429c1b0d1512 *README.md
 7080893e02c49cd296d4424b9be55069 *build/partial.rdb
 518e4a6b627043c41ddc9cd48d421815 *build/vignette.rds
-3a7f68fc8303daf3cf8c7f4bb82b62d6 *inst/doc/evergreenreviewgraphs.Rmd
-d8e497d8d827a27b30e87d9e67bd8a5b *inst/doc/evergreenreviewgraphs.html
-ae382c12c4ca23c5c1735804289cfd7c *inst/doc/introducing-europepmc.Rmd
-fb8a64645a7534bc80f4d7a2f892056e *inst/doc/introducing-europepmc.html
+a5ad62213042413dee37df08590a7a9d *inst/doc/evergreenreviewgraphs.Rmd
+ba961e6b4785470bf8391cd8fd0757ff *inst/doc/evergreenreviewgraphs.html
+4dc069e92c55896c9d05977b9f44f227 *inst/doc/introducing-europepmc.Rmd
+bcebfe0f21811a12c6aa873870a18674 *inst/doc/introducing-europepmc.html
 549d0392e830a48f22acfec433d6cc70 *man/epmc_annotations_by_id.Rd
 8620cbbe88ad36416b9302e0f878af96 *man/epmc_citations.Rd
 531172202d1258a235f0bf6d1f600845 *man/epmc_db.Rd
@@ -44,7 +44,6 @@ c7c09bd32e75972f04c8738cd664cfed *man/epmc_lablinks.Rd
 f35ec794373ec4b63d781d49fd61dd8b *man/epmc_search_by_doi.Rd
 516aec2ccbfba1fea6bd4e016654770d *man/epmc_search_by_doi_.Rd
 cd9b95340c98491b9c8dcda6abd67a18 *man/europepmc.Rd
-416e5f28b3caede39ea0beacd34382b3 *man/figures/unnamed-chunk-4-1.png
 ebde8a3ab2c9a67ffe86202ae525e2a8 *tests/testthat.R
 8e26ef43fdc4481ba7c01d11b917ea77 *tests/testthat/test_annotations_by_id.r
 8688992975a84cd01ef625cf7961eaa2 *tests/testthat/test_epmc_citations.r
@@ -54,7 +53,7 @@ db2ce32b204a45c1027b1593e958e471 *tests/testthat/test_epmc_db_count.r
 bfc57455d4d4342efde01786232fd60e *tests/testthat/test_epmc_ftxt.r
 71dec1fc15fa6c5aa2331bf1c45bd614 *tests/testthat/test_epmc_ftxt_book.r
 2cc5cf94415071fd51c921eb4a212234 *tests/testthat/test_epmc_hits.r
-db54c800bb69a0e8d12b244345a802db *tests/testthat/test_epmc_hits_trend.R
+0f78ab59494d88149f2d86e7b7b93889 *tests/testthat/test_epmc_hits_trend.R
 64b5c4dc652be2114a46c07febbec074 *tests/testthat/test_epmc_lablinks.r
 ab734164a64468ef9ad179c754b2fc37 *tests/testthat/test_epmc_lablinks_count.r
 0315bf46694cd80ccd284502f9f540ed *tests/testthat/test_epmc_profile.r
@@ -63,7 +62,7 @@ fd2a1a19f504377eadfaa405e2468b9b *tests/testthat/test_epmc_search.r
 450c7b2203d0bab78791fb36bf177f36 *tests/testthat/test_epmc_search_by_doi.r
 87bc278726da31bae5a77368559d49e7 *tests/testthat/test_epmc_tm.r
 9e0679d1341925f16e60de2ef8376168 *tests/testthat/test_epmc_tm_count.r
-3a7f68fc8303daf3cf8c7f4bb82b62d6 *vignettes/evergreenreviewgraphs.Rmd
-ae382c12c4ca23c5c1735804289cfd7c *vignettes/introducing-europepmc.Rmd
-46e512f20484aa8fcab2992533250ae6 *vignettes/oa_pmc-1.png
-587a7472f9e66f4e0159668c2dc43481 *vignettes/software_lit-1.png
+a5ad62213042413dee37df08590a7a9d *vignettes/evergreenreviewgraphs.Rmd
+4dc069e92c55896c9d05977b9f44f227 *vignettes/introducing-europepmc.Rmd
+6769dd0da6297964799dcb9992d9e206 *vignettes/oa_pmc-1.png
+0b205a0361b231afc2822674ac524f8f *vignettes/software_lit-1.png
